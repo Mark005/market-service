@@ -47,9 +47,11 @@ public class User {
   @Enumerated
   private Gender gender;
 
+  @Builder.Default
   @OneToMany(mappedBy = "user", orphanRemoval = true)
   private List<Address> addresses = new ArrayList<>();
 
+  @Builder.Default
   @OneToMany(mappedBy = "user", orphanRemoval = true)
   private List<Phone> phones = new ArrayList<>();
 

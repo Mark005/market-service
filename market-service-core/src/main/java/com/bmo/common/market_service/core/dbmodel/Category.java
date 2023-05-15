@@ -43,9 +43,11 @@ public class Category {
   @JoinColumn(name = "parent_category_id")
   private Category parentCategory;
 
+  @Builder.Default
   @OneToMany(mappedBy = "parentCategory", orphanRemoval = true)
   private List<Category> subCategories = new ArrayList<>();
 
+  @Builder.Default
   @ManyToMany
   @JoinTable(name = "category_products",
           joinColumns = @JoinColumn(name = "category_id"),

@@ -13,19 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CommonExceptionHandler {
 
-  @ExceptionHandler({CredentialsNotValidException.class, TokenNotValidException.class})
-  public ResponseEntity<ExceptionResponseBody> handleBadCredentialsException(Exception e) {
-    log.warn(e.getMessage(), e);
-    return ResponseEntity
-        .status(HttpStatus.UNAUTHORIZED)
-        .body(ExceptionResponseBody.builder()
-            .status(HttpStatus.UNAUTHORIZED.value())
-            .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-            .message(e.getMessage())
-            .timestamp(LocalDateTime.now())
-            .build());
-  }
-
   @ExceptionHandler(EntityNotFoundException.class)
   public ResponseEntity<ExceptionResponseBody> handleBadCredentialsException(EntityNotFoundException e) {
     log.warn(e.getMessage(), e);

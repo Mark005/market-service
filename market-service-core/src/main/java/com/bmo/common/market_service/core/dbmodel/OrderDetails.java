@@ -41,6 +41,7 @@ public class OrderDetails {
 
   private ZonedDateTime lastUpdateDate;
 
+  @Builder.Default
   @OneToMany(mappedBy = "orderDetails", orphanRemoval = true)
   private List<ProductItem> productItems = new ArrayList<>();
 
@@ -48,6 +49,7 @@ public class OrderDetails {
   @JoinColumn(name = "payment_details_id")
   private PaymentDetails paymentDetails;
 
+  @Builder.Default
   @OneToMany(mappedBy = "orderDetails", orphanRemoval = true)
   private List<OrderHistory> orderHistories = new ArrayList<>();
 

@@ -33,6 +33,7 @@ public class Cart {
   @Column(name = "id", nullable = false)
   private UUID id;
 
+  @Builder.Default
   @OneToMany(mappedBy = "cart", orphanRemoval = true)
   private List<Product> products = new ArrayList<>();
 

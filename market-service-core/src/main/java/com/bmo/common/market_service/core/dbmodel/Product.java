@@ -48,6 +48,7 @@ public class Product {
   @JoinColumn(name = "cart_id")
   private Cart cart;
 
+  @Builder.Default
   @ManyToMany(mappedBy = "products")
   private List<Category> categories = new ArrayList<>();
 
