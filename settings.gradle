@@ -1,0 +1,5 @@
+rootProject.name = 'market-service'
+include 'market-service-model'
+include 'market-service-client'
+include 'market-service-core'
+
