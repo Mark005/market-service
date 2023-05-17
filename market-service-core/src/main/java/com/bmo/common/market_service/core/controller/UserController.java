@@ -9,7 +9,9 @@ import com.bmo.common.market_service.model.user.RegisterUserDto;
 import com.bmo.common.market_service.model.user.RegisterUserResponseDto;
 import com.bmo.common.market_service.model.user.UpdateUserDto;
 import com.bmo.common.market_service.model.user.UserResponseDto;
+import com.bmo.common.market_service.model.user.UsersFilterCriteria;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +35,11 @@ public class UserController {
     private final RegisterUserResponseDtoMapper registerUserResponseDtoMapper;
 
     @GetMapping("/users")
-    public ResponseEntity<UserResponseDto> getUsersFiltered() {
+    public ResponseEntity<Page<UserResponseDto>> getUsersFiltered(UsersFilterCriteria usersFilterCriteria) {
 
-//        User user = userService.getUserById(currentUserId);
-//        UserResponseDto responseDto = userResponseDtoMapper.map(user);
-        return ResponseEntity.ok(UserResponseDto.builder().build());
+        Page<User> users = userService.getUsersFiltered(usersFilterCriteria);
+        Page<UserResponseDto> responseDto = users.map(userResponseDtoMapper::map);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/users/current")

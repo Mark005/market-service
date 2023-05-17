@@ -6,18 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 @Builder
 @AllArgsConstructor
-public class UserResponseDto {
+public class UsersFilterCriteria {
 
-  private UUID id;
-  private UUID securityUserId;
-  private String name;
-  private String surname;
-  private String email;
-  private UserStatusDto status;
-  private GenderDto gender;
+    private String name;
+    private String surname;
+    private String email;
+    private GenderDto gender;
+    private UserStatusDto status;
+
+    private Integer pageSize;
+    private Integer pageNumber;
 }
