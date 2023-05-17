@@ -1,19 +1,28 @@
-package com.bmo.common.market_service.model;
+package com.bmo.common.market_service.model.user;
 
 import com.bmo.common.market_service.model.enums.GenderDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class RegisterUserDto {
-  private UUID securityUserId;
+public class UpdateUserDto {
+
+  @NotBlank
   private String name;
+
+  @NotBlank
   private String surname;
+
+  @NotBlank
   private String email;
+
+  @NotNull
   private GenderDto gender;
+
 }

@@ -1,6 +1,7 @@
 package com.bmo.common.market_service.core.dbmodel;
 
 import com.bmo.common.market_service.core.dbmodel.enums.Gender;
+import com.bmo.common.market_service.core.dbmodel.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +29,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "app_user")
 public class User {
 
   @Id
@@ -44,7 +46,10 @@ public class User {
 
   private String email;
 
-  @Enumerated
+  @Enumerated(EnumType.STRING)
+  private UserStatus status;
+
+  @Enumerated(EnumType.STRING)
   private Gender gender;
 
   @Builder.Default
@@ -55,8 +60,8 @@ public class User {
   @OneToMany(mappedBy = "user", orphanRemoval = true)
   private List<Phone> phones = new ArrayList<>();
 
-  @OneToOne(optional = false, orphanRemoval = true)
-  @JoinColumn(name = "cart_id", nullable = false)
+  @OneToOne(orphanRemoval = true)
+  @JoinColumn(name = "cart_id")
   private Cart cart;
 
 }
