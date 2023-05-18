@@ -1,6 +1,5 @@
 package com.bmo.common.market_service.core.dbmodel;
 
-import com.bmo.common.market_service.core.dbmodel.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +33,7 @@ public class Phone {
   private String number;
 
   @Column(name = "is_primary", nullable = false)
-  private Gender isPrimary;
+  private Boolean isPrimary;
 
   @ManyToOne
   @JoinColumn(name = "user_id")

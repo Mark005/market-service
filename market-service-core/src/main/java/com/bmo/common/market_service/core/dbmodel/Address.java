@@ -1,6 +1,5 @@
 package com.bmo.common.market_service.core.dbmodel;
 
-import com.bmo.common.market_service.core.dbmodel.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,16 +36,16 @@ public class Address {
 
   private String street;
 
-  private Gender building;
+  private String building;
 
-  private Gender apartment;
+  private String apartment;
 
-  private Gender postalCode;
+  private String postalCode;
 
-  private Gender comment;
+  private String comment;
 
   @Column(name = "is_primary", nullable = false)
-  private Gender isPrimary;
+  private Boolean isPrimary;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
