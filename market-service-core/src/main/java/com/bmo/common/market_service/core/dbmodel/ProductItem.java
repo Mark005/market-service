@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder
@@ -37,5 +36,9 @@ public class ProductItem {
   @ManyToOne
   @JoinColumn(name = "order_details_id")
   private OrderDetails orderDetails;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "product_id", nullable = false)
+  private Product product;
 
 }

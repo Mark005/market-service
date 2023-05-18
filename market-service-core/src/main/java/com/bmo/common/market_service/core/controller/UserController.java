@@ -13,7 +13,6 @@ import com.bmo.common.market_service.model.user.UsersFilterCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,7 +79,7 @@ public class UserController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @DeleteMapping("/users/current")
+    @PatchMapping("/users/current/delete")
     public ResponseEntity<Void> deleteCurrentUser(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 

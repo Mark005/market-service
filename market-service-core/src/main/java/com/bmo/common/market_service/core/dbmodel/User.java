@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,7 +63,7 @@ public class User {
   @OneToMany(mappedBy = "user", orphanRemoval = true)
   private List<Phone> phones = new ArrayList<>();
 
-  @OneToOne(orphanRemoval = true)
+  @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
   @JoinColumn(name = "cart_id")
   private Cart cart;
 
