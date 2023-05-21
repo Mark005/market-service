@@ -4,20 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-import java.util.UUID;
-
 @Data
 @Builder
 @AllArgsConstructor
-public class CategoryResponseDto {
-
-    private UUID id;
+public class CategoriesFilterCriteria {
 
     private String name;
-
-    private String description;
-
-    private List<CategoryResponseDto> subCategories;
-
 }

@@ -50,7 +50,7 @@ public class PhoneController {
     }
 
     @PutMapping("/users/current/phones/{id}")
-    public ResponseEntity<PhoneResponseDto> addPhone(
+    public ResponseEntity<PhoneResponseDto> updatePhone(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @NotNull @PathVariable("id") UUID phoneId,
             @RequestBody @Valid PhoneUpdateDto updatedPhone) {

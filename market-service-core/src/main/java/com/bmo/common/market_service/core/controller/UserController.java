@@ -5,6 +5,7 @@ import com.bmo.common.market_service.core.dbmodel.User;
 import com.bmo.common.market_service.core.mapper.user.RegisterUserResponseDtoMapper;
 import com.bmo.common.market_service.core.mapper.user.UserResponseDtoMapper;
 import com.bmo.common.market_service.core.service.UserService;
+import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.user.RegisterUserDto;
 import com.bmo.common.market_service.model.user.RegisterUserResponseDto;
 import com.bmo.common.market_service.model.user.UpdateUserDto;
@@ -34,9 +35,9 @@ public class UserController {
     private final RegisterUserResponseDtoMapper registerUserResponseDtoMapper;
 
     @GetMapping("/users")
-    public ResponseEntity<Page<UserResponseDto>> getUsersFiltered(UsersFilterCriteria usersFilterCriteria) {
+    public ResponseEntity<Page<UserResponseDto>> getUsersFiltered(UsersFilterCriteria usersFilterCriteria, PageRequestDto pageRequest) {
 
-        Page<User> users = userService.getUsersFiltered(usersFilterCriteria);
+        Page<User> users = userService.getUsersFiltered(usersFilterCriteria, pageRequest);
         Page<UserResponseDto> responseDto = users.map(userResponseDtoMapper::map);
         return ResponseEntity.ok(responseDto);
     }

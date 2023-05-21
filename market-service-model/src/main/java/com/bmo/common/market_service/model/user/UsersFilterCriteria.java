@@ -16,7 +16,4 @@ public class UsersFilterCriteria {
     private String email;
     private GenderDto gender;
     private UserStatusDto status;
-
-    private Integer pageSize;
-    private Integer pageNumber;
 }

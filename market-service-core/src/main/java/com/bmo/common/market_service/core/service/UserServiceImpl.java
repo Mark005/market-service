@@ -9,6 +9,7 @@ import com.bmo.common.market_service.core.mapper.user.UserMapper;
 import com.bmo.common.market_service.core.repository.CartRepository;
 import com.bmo.common.market_service.core.repository.UserRepository;
 import com.bmo.common.market_service.core.repository.specification.UserSpecification;
+import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.exception.EntityNotFoundException;
 import com.bmo.common.market_service.model.user.RegisterUserDto;
 import com.bmo.common.market_service.model.user.UpdateUserDto;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
     private final EnumMapper enumMapper;
 
     @Override
-    public Page<User> getUsersFiltered(UsersFilterCriteria filter) {
+    public Page<User> getUsersFiltered(UsersFilterCriteria filter, PageRequestDto pageRequest) {
         Specification<User> specification =
                 Specification.where(UserSpecification.name(filter.getName()))
                 .and(UserSpecification.surname(filter.getSurname()))
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
                 .and(UserSpecification.status(enumMapper.map(filter.getStatus())))
                 .and(UserSpecification.gender(enumMapper.map(filter.getGender())));
 
-        return userRepository.findAll(specification, PageableMapper.map(filter));
+        return userRepository.findAll(specification, PageableMapper.map(pageRequest));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.bmo.common.market_service.core.service;
 
 import com.bmo.common.market_service.core.dbmodel.User;
+import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.user.RegisterUserDto;
 import com.bmo.common.market_service.model.user.UpdateUserDto;
 import com.bmo.common.market_service.model.user.UsersFilterCriteria;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    Page<User> getUsersFiltered(UsersFilterCriteria usersFilterCriteria);
+    Page<User> getUsersFiltered(UsersFilterCriteria usersFilterCriteria, PageRequestDto pageRequest);
 
     User getUserById(UUID currentUserId);
 

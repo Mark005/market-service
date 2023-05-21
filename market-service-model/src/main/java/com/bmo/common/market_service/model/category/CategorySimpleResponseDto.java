@@ -17,4 +17,6 @@ public class CategorySimpleResponseDto {
 
     private String description;
 
+    private UUID parentCategoryId;
+
 }

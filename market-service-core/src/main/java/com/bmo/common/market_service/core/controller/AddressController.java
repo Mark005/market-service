@@ -50,7 +50,7 @@ public class AddressController {
     }
 
     @PutMapping("/users/current/addresses/{id}")
-    public ResponseEntity<AddressResponseDto> addAddress(
+    public ResponseEntity<AddressResponseDto> updateAddress(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @NotNull @PathVariable("id") UUID addressId,
             @RequestBody @Valid AddressUpdateDto updatedAddress) {
@@ -61,7 +61,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/users/current/addresses/{id}")
-    public ResponseEntity<AddressResponseDto> deleteAddress(
+    public ResponseEntity<Void> deleteAddress(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @NotNull @PathVariable("id") UUID addressId) {
 
