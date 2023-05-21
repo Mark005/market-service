@@ -14,5 +14,5 @@ public interface AddressService {
 
     Address updateUsersAddress(UUID userId, UUID addressId, AddressUpdateDto updatedAddress);
 
-    Address deleteUsersAddress(UUID userId, UUID addressId);
+    void deleteUsersAddress(UUID userId, UUID addressId);
 }

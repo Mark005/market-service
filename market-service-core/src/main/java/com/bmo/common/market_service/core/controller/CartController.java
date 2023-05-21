@@ -25,7 +25,7 @@ public class CartController {
     private final CartService cartService;
     private final CartResponseDtoMapper cartResponseDtoMapper;
 
-    @GetMapping("/carts/current")
+    @GetMapping("/users/current/cart")
     public ResponseEntity<CartResponseDto> getCartWithProducts(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
@@ -34,7 +34,7 @@ public class CartController {
         return ResponseEntity.ok(cartResponseDto);
     }
 
-    @PatchMapping("/carts/current/add-products")
+    @PatchMapping("/users/current/cart/add-products")
     public ResponseEntity<CartResponseDto> addProductsToCart(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @RequestBody @Valid ProductsDto productsDto) {
@@ -44,7 +44,7 @@ public class CartController {
         return ResponseEntity.ok(cartResponseDto);
     }
 
-    @PatchMapping("/carts/current/remove-products")
+    @PatchMapping("/users/current/cart/remove-products")
     public ResponseEntity<CartResponseDto> removeProductsFromCart(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @RequestBody @Valid ProductsDto productsDto) {
@@ -54,7 +54,7 @@ public class CartController {
         return ResponseEntity.ok(cartResponseDto);
     }
 
-    @PatchMapping("/carts/current/clear")
+    @PatchMapping("/users/current/cart/clear")
     public ResponseEntity<CartResponseDto> removeAllProductsFromCart(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 

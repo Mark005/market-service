@@ -30,7 +30,7 @@ public class AddressController {
     private final AddressService addressService;
     private final AddressResponseDtoMapper addressResponseDtoMapper;
 
-    @GetMapping("/address")
+    @GetMapping("/users/current/addresses")
     public ResponseEntity<List<AddressResponseDto>> getAllAddresses(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
@@ -39,7 +39,7 @@ public class AddressController {
         return ResponseEntity.ok(cartResponseDto);
     }
 
-    @PostMapping("/address")
+    @PostMapping("/users/current/addresses")
     public ResponseEntity<AddressResponseDto> addAddress(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @RequestBody @Valid AddressCreateDto newAddress) {
@@ -49,7 +49,7 @@ public class AddressController {
         return ResponseEntity.ok(addressResponseDto);
     }
 
-    @PutMapping("/address/{id}")
+    @PutMapping("/users/current/addresses/{id}")
     public ResponseEntity<AddressResponseDto> addAddress(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @NotNull @PathVariable("id") UUID addressId,
@@ -60,14 +60,13 @@ public class AddressController {
         return ResponseEntity.ok(addressResponseDto);
     }
 
-    @DeleteMapping("/address/{id}")
+    @DeleteMapping("/users/current/addresses/{id}")
     public ResponseEntity<AddressResponseDto> deleteAddress(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
             @NotNull @PathVariable("id") UUID addressId) {
 
-        Address address = addressService.deleteUsersAddress(userId, addressId);
-        AddressResponseDto addressResponseDto = addressResponseDtoMapper.map(address);
-        return ResponseEntity.ok(addressResponseDto);
+        addressService.deleteUsersAddress(userId, addressId);
+        return ResponseEntity.noContent().build();
     }
 
 }

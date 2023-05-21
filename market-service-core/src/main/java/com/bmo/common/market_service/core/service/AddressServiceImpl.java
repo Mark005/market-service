@@ -32,8 +32,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address deleteUsersAddress(UUID userId, UUID addressId) {
+    public void deleteUsersAddress(UUID userId, UUID addressId) {
         //ToDo
-        return null;
     }
 }
