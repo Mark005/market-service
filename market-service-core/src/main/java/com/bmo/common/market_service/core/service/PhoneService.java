@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PhoneService {
+
+    Phone getPhoneByIdAndUserId(UUID userId, UUID phoneId, PhoneUpdateDto updatedPhone);
+
     List<Phone> getAllPhonesByUserId(UUID userId);
 
     Phone addPhoneToUser(UUID userId, PhoneCreateDto newPhone);

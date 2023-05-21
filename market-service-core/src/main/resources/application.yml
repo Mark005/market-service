@@ -19,19 +19,11 @@ spring:
   liquibase:
     change-log: db/changelog/db.changelog-master.yaml
 
-oauth2:
+feign:
   client:
-    providers:
-      - provider: github
-        client-id: ${GITHUB_CLIENT_ID:3be5dba121b074dcd72d}
-        client-secret: ${GITHUB_CLIENT_SECRET:411e16d70ebd97e2fe47553de7906a69a0cf8243}
-        authorization-request-uri: /oauth2/authorization/github
-        authorization-url: https://github.com/login/oauth/authorize
-        scope: read:user
-        # Should be changed to gateway relative
-        redirect-url: ${GITHUB_REDIRECT_URL:http://localhost:8080/login/oauth2/code/github}
-        token-url: https://github.com/login/oauth/access_token
-        user-info-url: https://api.github.com/user
+    config:
+      auth-service:
+        url: http://localhost:8081
 
 jwt:
   valid-duration: PT24H

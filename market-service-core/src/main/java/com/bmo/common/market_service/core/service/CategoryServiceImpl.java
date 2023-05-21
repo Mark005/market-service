@@ -17,6 +17,12 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
 
     @Override
+    public Category getCategoryById(UUID categoryId) {
+        //ToDo
+        return null;
+    }
+
+    @Override
     public List<Category> getAllMainCategoriesWithDependent() {
         //ToDo
         return null;

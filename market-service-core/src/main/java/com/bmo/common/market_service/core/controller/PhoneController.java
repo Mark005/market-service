@@ -30,6 +30,17 @@ public class PhoneController {
     private final PhoneService phoneService;
     private final PhoneResponseDtoMapper phoneResponseDtoMapper;
 
+    @GetMapping("/users/current/phones/{id}")
+    public ResponseEntity<PhoneResponseDto> getPhoneForCurrentUserById(
+            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+            @NotNull @PathVariable("id") UUID phoneId,
+            @RequestBody @Valid PhoneUpdateDto updatedPhone) {
+
+        Phone phone = phoneService.getPhoneByIdAndUserId(userId, phoneId, updatedPhone);
+        PhoneResponseDto phoneResponseDto = phoneResponseDtoMapper.map(phone);
+        return ResponseEntity.ok(phoneResponseDto);
+    }
+
     @GetMapping("/users/current/phones")
     public ResponseEntity<List<PhoneResponseDto>> getAllPhones(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {

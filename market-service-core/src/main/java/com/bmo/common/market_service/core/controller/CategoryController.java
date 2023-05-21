@@ -32,6 +32,14 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final CategoryResponseDtoMapper categoryResponseDtoMapper;
 
+    @GetMapping("/categories/{id}")
+    public ResponseEntity<CategorySimpleResponseDto> getCategoryById(@NotNull @PathVariable("id") UUID categoryId) {
+
+        Category category = categoryService.getCategoryById(categoryId);
+        CategorySimpleResponseDto categoryResponseDto = categoryResponseDtoMapper.map(category);
+        return ResponseEntity.ok(categoryResponseDto);
+    }
+
     @GetMapping("/categories/verbose")
     public ResponseEntity<List<CategoryResponseDto>> getAllMainCategoriesWithDependent() {
 

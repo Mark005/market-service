@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AddressService {
+    Address getAddressByIdAndUserId(UUID userId, UUID addressId);
+
     List<Address> getAllAddressesByUserId(UUID userId);
 
     Address addAddressToUser(UUID userId, AddressCreateDto newAddress);

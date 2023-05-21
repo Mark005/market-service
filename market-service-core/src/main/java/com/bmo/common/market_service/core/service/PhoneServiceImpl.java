@@ -14,6 +14,12 @@ import java.util.UUID;
 public class PhoneServiceImpl implements PhoneService {
 
     @Override
+    public Phone getPhoneByIdAndUserId(UUID userId, UUID phoneId, PhoneUpdateDto updatedPhone) {
+        //ToDo
+        return null;
+    }
+
+    @Override
     public List<Phone> getAllPhonesByUserId(UUID userId) {
         //ToDo
         return null;

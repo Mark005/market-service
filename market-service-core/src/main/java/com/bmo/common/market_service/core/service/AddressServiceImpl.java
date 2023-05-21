@@ -14,6 +14,12 @@ import java.util.UUID;
 public class AddressServiceImpl implements AddressService {
 
     @Override
+    public Address getAddressByIdAndUserId(UUID userId, UUID addressId) {
+        //ToDo
+        return null;
+    }
+
+    @Override
     public List<Address> getAllAddressesByUserId(UUID userId) {
         //ToDo
         return null;

@@ -30,6 +30,16 @@ public class AddressController {
     private final AddressService addressService;
     private final AddressResponseDtoMapper addressResponseDtoMapper;
 
+    @GetMapping("/users/current/addresses/{id}")
+    public ResponseEntity<AddressResponseDto> getAddressForCurrentUserById(
+            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+            @NotNull @PathVariable("id") UUID addressId) {
+
+        Address address = addressService.getAddressByIdAndUserId(userId, addressId);
+        AddressResponseDto addressResponseDto = addressResponseDtoMapper.map(address);
+        return ResponseEntity.ok(addressResponseDto);
+    }
+
     @GetMapping("/users/current/addresses")
     public ResponseEntity<List<AddressResponseDto>> getAllAddresses(
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {

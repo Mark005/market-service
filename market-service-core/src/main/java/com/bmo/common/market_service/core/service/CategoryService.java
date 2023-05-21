@@ -12,6 +12,8 @@ import java.util.UUID;
 
 public interface CategoryService {
 
+    Category getCategoryById(UUID categoryId);
+
     List<Category> getAllMainCategoriesWithDependent();
 
     Page<Category> getCategoriesFiltered(CategoriesFilterCriteria categoriesFilterCriteria, PageRequestDto pageRequestDto);
