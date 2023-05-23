@@ -1,4 +1,4 @@
-package com.bmo.common.market_service.core.mapper;
+package com.bmo.common.market_service.core.mapper.order_details;
 
 import com.bmo.common.market_service.core.configs.MapStructCommonConfig;
 import com.bmo.common.market_service.core.dbmodel.OrderDetails;

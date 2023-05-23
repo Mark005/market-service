@@ -2,7 +2,7 @@ package com.bmo.common.market_service.core.controller;
 
 import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.OrderDetails;
-import com.bmo.common.market_service.core.mapper.OrderDetailsResponseDtoMapper;
+import com.bmo.common.market_service.core.mapper.order_details.OrderDetailsResponseDtoMapper;
 import com.bmo.common.market_service.core.service.OrderDetailsService;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.oreder_details.OrderCreateDto;

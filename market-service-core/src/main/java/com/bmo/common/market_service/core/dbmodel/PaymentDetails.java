@@ -1,5 +1,6 @@
 package com.bmo.common.market_service.core.dbmodel;
 
+import com.bmo.common.market_service.core.dbmodel.enums.PaymentMethod;
 import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +36,8 @@ public class PaymentDetails {
 
   private BigDecimal amount;
 
-  private String provider;
+  @Enumerated(EnumType.STRING)
+  private PaymentMethod paymentMethod;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "payment_status")
