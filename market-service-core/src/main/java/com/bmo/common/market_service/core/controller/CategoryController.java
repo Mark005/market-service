@@ -1,7 +1,7 @@
 package com.bmo.common.market_service.core.controller;
 
 import com.bmo.common.market_service.core.dbmodel.Category;
-import com.bmo.common.market_service.core.mapper.category.CategoryResponseDtoMapper;
+import com.bmo.common.market_service.core.mapper.CategoryMapper;
 import com.bmo.common.market_service.core.service.CategoryService;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.category.CategoriesFilterCriteria;
@@ -9,6 +9,10 @@ import com.bmo.common.market_service.model.category.CategoryCreateDto;
 import com.bmo.common.market_service.model.category.CategoryResponseDto;
 import com.bmo.common.market_service.model.category.CategorySimpleResponseDto;
 import com.bmo.common.market_service.model.category.CategoryUpdateDto;
+import java.util.List;
+import java.util.UUID;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -20,23 +24,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.UUID;
-
 @RestController
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final CategoryResponseDtoMapper categoryResponseDtoMapper;
+    private final CategoryMapper categoryMapper;
 
     @GetMapping("/categories/{id}")
     public ResponseEntity<CategorySimpleResponseDto> getCategoryById(@NotNull @PathVariable("id") UUID categoryId) {
 
         Category category = categoryService.getCategoryById(categoryId);
-        CategorySimpleResponseDto categoryResponseDto = categoryResponseDtoMapper.map(category);
+        CategorySimpleResponseDto categoryResponseDto = categoryMapper.mapToResponseDto(category);
         return ResponseEntity.ok(categoryResponseDto);
     }
 
@@ -44,7 +43,7 @@ public class CategoryController {
     public ResponseEntity<List<CategoryResponseDto>> getAllMainCategoriesWithDependent() {
 
         List<Category> categories = categoryService.getAllMainCategoriesWithDependent();
-        List<CategoryResponseDto> categoryResponseDtos = categoryResponseDtoMapper.map(categories);
+        List<CategoryResponseDto> categoryResponseDtos = categoryMapper.mapToResponseDto(categories);
         return ResponseEntity.ok(categoryResponseDtos);
     }
 
@@ -54,7 +53,7 @@ public class CategoryController {
             PageRequestDto pageRequestDto) {
 
         Page<Category> categoriesPage = categoryService.getCategoriesFiltered(categoriesFilterCriteria, pageRequestDto);
-        Page<CategorySimpleResponseDto> categoriesDtoPage = categoriesPage.map(categoryResponseDtoMapper::map);
+        Page<CategorySimpleResponseDto> categoriesDtoPage = categoriesPage.map(categoryMapper::mapToResponseDto);
         return ResponseEntity.ok(categoriesDtoPage);
     }
 
@@ -62,7 +61,7 @@ public class CategoryController {
     public ResponseEntity<CategorySimpleResponseDto> addCategory(@RequestBody @Valid CategoryCreateDto newCategory) {
 
         Category category = categoryService.addCategory(newCategory);
-        CategorySimpleResponseDto categorySimpleResponseDto = categoryResponseDtoMapper.map(category);
+        CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToResponseDto(category);
         return ResponseEntity.ok(categorySimpleResponseDto);
     }
 
@@ -72,7 +71,7 @@ public class CategoryController {
             @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
 
         Category category = categoryService.updateCategory(categoryId, categoryUpdateDto);
-        CategorySimpleResponseDto categorySimpleResponseDto = categoryResponseDtoMapper.map(category);
+        CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToResponseDto(category);
         return ResponseEntity.ok(categorySimpleResponseDto);
     }
 

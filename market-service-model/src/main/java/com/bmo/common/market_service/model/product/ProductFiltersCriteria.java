@@ -1,6 +1,5 @@
 package com.bmo.common.market_service.model.product;
 
-import com.bmo.common.market_service.model.category.CategorySimpleResponseDto;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -11,18 +10,18 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class ProductResponseDto {
-
-  private UUID id;
+public class ProductFiltersCriteria {
 
   private String name;
 
   private String description;
 
-  private BigDecimal price;
+  private BigDecimal priceFrom;
+
+  private BigDecimal priceTo;
 
   private String barcode;
 
-  private List<CategorySimpleResponseDto> categories;
+  private List<UUID> categoryIds;
 
 }

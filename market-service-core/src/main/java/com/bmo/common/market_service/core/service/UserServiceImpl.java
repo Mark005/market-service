@@ -5,7 +5,7 @@ import com.bmo.common.market_service.core.dbmodel.User;
 import com.bmo.common.market_service.core.dbmodel.enums.UserStatus;
 import com.bmo.common.market_service.core.mapper.EnumMapper;
 import com.bmo.common.market_service.core.mapper.PageableMapper;
-import com.bmo.common.market_service.core.mapper.user.UserMapper;
+import com.bmo.common.market_service.core.mapper.UserMapper;
 import com.bmo.common.market_service.core.repository.CartRepository;
 import com.bmo.common.market_service.core.repository.UserRepository;
 import com.bmo.common.market_service.core.repository.specification.UserSpecification;
@@ -14,14 +14,13 @@ import com.bmo.common.market_service.model.exception.EntityNotFoundException;
 import com.bmo.common.market_service.model.user.RegisterUserDto;
 import com.bmo.common.market_service.model.user.UpdateUserDto;
 import com.bmo.common.market_service.model.user.UsersFilterCriteria;
+import java.util.UUID;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User registerUser(@NotNull UUID securityUserId, RegisterUserDto registerUserDto) {
-        User user = userMapper.map(securityUserId, registerUserDto);
+        User user = userMapper.mapToEntity(securityUserId, registerUserDto);
 
         Cart cart = new Cart();
         cartRepository.save(cart);

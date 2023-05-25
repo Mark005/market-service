@@ -1,14 +1,14 @@
-package com.bmo.common.market_service.core.mapper.user;
+package com.bmo.common.market_service.core.mapper;
 
 import com.bmo.common.market_service.core.configs.MapStructCommonConfig;
 import com.bmo.common.market_service.core.dbmodel.User;
 import com.bmo.common.market_service.model.user.RegisterUserDto;
 import com.bmo.common.market_service.model.user.UpdateUserDto;
+import com.bmo.common.market_service.model.user.UserResponseDto;
+import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-
-import java.util.UUID;
 
 @Mapper(config = MapStructCommonConfig.class)
 public interface UserMapper {
@@ -18,7 +18,7 @@ public interface UserMapper {
     @Mapping(target = "addresses", ignore = true)
     @Mapping(target = "phones", ignore = true)
     @Mapping(target = "cart", ignore = true)
-    User map(UUID securityUserId, RegisterUserDto registerUserDto);
+    User mapToEntity(UUID securityUserId, RegisterUserDto registerUserDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "securityUserId", ignore = true)
@@ -27,4 +27,6 @@ public interface UserMapper {
     @Mapping(target = "phones", ignore = true)
     @Mapping(target = "cart", ignore = true)
     User merge(@MappingTarget User user, UpdateUserDto updateUserDto);
+
+    UserResponseDto mapToResponseDto(User user);
 }

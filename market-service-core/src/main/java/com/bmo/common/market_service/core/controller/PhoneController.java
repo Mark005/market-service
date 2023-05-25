@@ -2,11 +2,15 @@ package com.bmo.common.market_service.core.controller;
 
 import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.Phone;
-import com.bmo.common.market_service.core.mapper.phone.PhoneResponseDtoMapper;
+import com.bmo.common.market_service.core.mapper.PhoneMapper;
 import com.bmo.common.market_service.core.service.PhoneService;
 import com.bmo.common.market_service.model.phone.PhoneCreateDto;
 import com.bmo.common.market_service.model.phone.PhoneResponseDto;
 import com.bmo.common.market_service.model.phone.PhoneUpdateDto;
+import java.util.List;
+import java.util.UUID;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,17 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.UUID;
-
 @RestController
 @RequiredArgsConstructor
 public class PhoneController {
 
     private final PhoneService phoneService;
-    private final PhoneResponseDtoMapper phoneResponseDtoMapper;
+    private final PhoneMapper phoneMapper;
 
     @GetMapping("/users/current/phones/{id}")
     public ResponseEntity<PhoneResponseDto> getPhoneForCurrentUserById(
@@ -37,7 +36,7 @@ public class PhoneController {
             @RequestBody @Valid PhoneUpdateDto updatedPhone) {
 
         Phone phone = phoneService.getPhoneByIdAndUserId(userId, phoneId, updatedPhone);
-        PhoneResponseDto phoneResponseDto = phoneResponseDtoMapper.map(phone);
+        PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
         return ResponseEntity.ok(phoneResponseDto);
     }
 
@@ -46,7 +45,7 @@ public class PhoneController {
             @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
         List<Phone> phones = phoneService.getAllPhonesByUserId(userId);
-        List<PhoneResponseDto> cartResponseDto = phoneResponseDtoMapper.map(phones);
+        List<PhoneResponseDto> cartResponseDto = phoneMapper.map(phones);
         return ResponseEntity.ok(cartResponseDto);
     }
 
@@ -56,7 +55,7 @@ public class PhoneController {
             @RequestBody @Valid PhoneCreateDto newPhone) {
 
         Phone phone = phoneService.addPhoneToUser(userId, newPhone);
-        PhoneResponseDto phoneResponseDto = phoneResponseDtoMapper.map(phone);
+        PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
         return ResponseEntity.ok(phoneResponseDto);
     }
 
@@ -67,7 +66,7 @@ public class PhoneController {
             @RequestBody @Valid PhoneUpdateDto updatedPhone) {
 
         Phone phone = phoneService.updateUsersPhone(userId, phoneId, updatedPhone);
-        PhoneResponseDto phoneResponseDto = phoneResponseDtoMapper.map(phone);
+        PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
         return ResponseEntity.ok(phoneResponseDto);
     }
 

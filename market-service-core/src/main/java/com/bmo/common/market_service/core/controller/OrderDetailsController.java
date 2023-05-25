@@ -2,12 +2,15 @@ package com.bmo.common.market_service.core.controller;
 
 import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.OrderDetails;
-import com.bmo.common.market_service.core.mapper.order_details.OrderDetailsResponseDtoMapper;
+import com.bmo.common.market_service.core.mapper.OrderDetailsMapper;
 import com.bmo.common.market_service.core.service.OrderDetailsService;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.oreder_details.OrderCreateDto;
 import com.bmo.common.market_service.model.oreder_details.OrderDetailsResponseDto;
 import com.bmo.common.market_service.model.user.UsersFilterCriteria;
+import java.util.UUID;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.UUID;
-
 @RestController
 @RequiredArgsConstructor
 public class OrderDetailsController {
 
     private final OrderDetailsService orderDetailsService;
-    private final OrderDetailsResponseDtoMapper orderDetailsResponseDtoMapper;
+    private final OrderDetailsMapper orderDetailsMapper;
 
     @GetMapping("/users/current/orders")
     public ResponseEntity<Page<OrderDetailsResponseDto>> getOrdersForCurrentUser(
@@ -37,7 +36,7 @@ public class OrderDetailsController {
             PageRequestDto pageRequest) {
 
         Page<OrderDetails> orders = orderDetailsService.getOrdersFiltered(userId, usersFilterCriteria, pageRequest);
-        Page<OrderDetailsResponseDto> responsePage = orders.map(orderDetailsResponseDtoMapper::map);
+        Page<OrderDetailsResponseDto> responsePage = orders.map(orderDetailsMapper::mapToResponseDto);
         return ResponseEntity.ok(responsePage);
     }
 
@@ -47,7 +46,7 @@ public class OrderDetailsController {
             @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId) {
 
         OrderDetails order = orderDetailsService.getOrderByIdAndUserId(orderId, currentUserId);
-        OrderDetailsResponseDto responseDto = orderDetailsResponseDtoMapper.map(order);
+        OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -57,7 +56,7 @@ public class OrderDetailsController {
             @RequestBody @Valid OrderCreateDto orderCreateDto) {
 
         OrderDetails order = orderDetailsService.createOrder(currentUserId, orderCreateDto);
-        OrderDetailsResponseDto responseDto = orderDetailsResponseDtoMapper.map(order);
+        OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -67,7 +66,7 @@ public class OrderDetailsController {
             @NotNull @PathVariable("id") UUID orderId) {
 
         OrderDetails order = orderDetailsService.cancelOrder(userId, orderId);
-        OrderDetailsResponseDto responseDto = orderDetailsResponseDtoMapper.map(order);
+        OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
         return ResponseEntity.ok(responseDto);
     }
 }
