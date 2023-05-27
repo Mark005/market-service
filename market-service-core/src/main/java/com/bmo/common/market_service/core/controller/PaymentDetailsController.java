@@ -2,8 +2,11 @@ package com.bmo.common.market_service.core.controller;
 
 import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.PaymentDetails;
+import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
+import com.bmo.common.market_service.core.mapper.EnumMapper;
 import com.bmo.common.market_service.core.mapper.PaymentDetailsMapper;
 import com.bmo.common.market_service.core.service.PaymentDetailsService;
+import com.bmo.common.market_service.model.enums.PaymentStatusDto;
 import com.bmo.common.market_service.model.payment_details.MakePaymentRequestDto;
 import com.bmo.common.market_service.model.payment_details.PaymentDetailsResponseDto;
 import com.bmo.common.market_service.model.payment_details.PaymentStatusChangeRequestDto;
@@ -23,6 +26,7 @@ public class PaymentDetailsController {
 
     private final PaymentDetailsService paymentDetailsService;
     private final PaymentDetailsMapper paymentDetailsMapper;
+    private final EnumMapper enumMapper;
 
     @PatchMapping("/users/current/payment-details/{id}/pay")
     public ResponseEntity<PaymentDetailsResponseDto> makePayment(
@@ -41,7 +45,10 @@ public class PaymentDetailsController {
             @NotNull @PathVariable("id") UUID paymentId,
             @RequestBody PaymentStatusChangeRequestDto paymentStatusChangeRequestDto) {
 
-        PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(currentUserId, paymentId, paymentStatusChangeRequestDto);
+        PaymentStatusDto paymentStatusDto = paymentStatusChangeRequestDto.getPaymentStatusDto();
+        PaymentStatus paymentStatus = enumMapper.map(paymentStatusDto);
+        PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(currentUserId, paymentId,
+            paymentStatus);
         PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
         return ResponseEntity.ok(responseDto);
     }

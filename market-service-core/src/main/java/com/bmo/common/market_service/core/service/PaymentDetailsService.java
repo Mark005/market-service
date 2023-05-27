@@ -1,9 +1,8 @@
 package com.bmo.common.market_service.core.service;
 
 import com.bmo.common.market_service.core.dbmodel.PaymentDetails;
+import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
 import com.bmo.common.market_service.model.payment_details.MakePaymentRequestDto;
-import com.bmo.common.market_service.model.payment_details.PaymentStatusChangeRequestDto;
-
 import java.util.UUID;
 
 public interface PaymentDetailsService {
@@ -13,5 +12,5 @@ public interface PaymentDetailsService {
 
     PaymentDetails changePaymentStatus(UUID currentUserId,
                                        UUID paymentId,
-                                       PaymentStatusChangeRequestDto paymentStatusChangeRequestDto);
+                                       PaymentStatus newPaymentStatus);
 }
