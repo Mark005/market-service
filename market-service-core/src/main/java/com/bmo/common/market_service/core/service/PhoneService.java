@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface PhoneService {
 
-    Phone getPhoneByIdAndUserId(UUID userId, UUID phoneId, PhoneUpdateDto updatedPhone);
+    Phone getPhoneByIdAndUserId(UUID userId, UUID phoneId);
 
     List<Phone> getAllPhonesByUserId(UUID userId);
 

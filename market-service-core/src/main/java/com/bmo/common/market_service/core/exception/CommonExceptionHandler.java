@@ -2,6 +2,7 @@ package com.bmo.common.market_service.core.exception;
 
 import com.bmo.common.market_service.model.exception.EntityNotFoundException;
 
+import com.bmo.common.market_service.model.exception.MarketServiceBusinessException;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 public class CommonExceptionHandler {
+
+  @ExceptionHandler(MarketServiceBusinessException.class)
+  public ResponseEntity<ExceptionResponseBody> handleBadCredentialsException(MarketServiceBusinessException e) {
+    log.warn(e.getMessage(), e);
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(ExceptionResponseBody.builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+            .message(e.getMessage())
+            .timestamp(LocalDateTime.now())
+            .build());
+  }
 
   @ExceptionHandler(EntityNotFoundException.class)
   public ResponseEntity<ExceptionResponseBody> handleBadCredentialsException(EntityNotFoundException e) {

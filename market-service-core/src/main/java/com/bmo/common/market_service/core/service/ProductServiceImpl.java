@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Product getProductById(UUID productId) {
     //ToDo
-    return null;
+    return Product.builder().name("qqqqq").build();
   }
 
   @Override
