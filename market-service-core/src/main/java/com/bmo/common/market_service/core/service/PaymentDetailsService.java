@@ -6,11 +6,12 @@ import com.bmo.common.market_service.model.payment_details.MakePaymentRequestDto
 import java.util.UUID;
 
 public interface PaymentDetailsService {
-    PaymentDetails makePayment(UUID currentUserId,
-                               UUID paymentId,
-                               MakePaymentRequestDto makePaymentRequestDto);
 
-    PaymentDetails changePaymentStatus(UUID currentUserId,
-                                       UUID paymentId,
-                                       PaymentStatus newPaymentStatus);
+  PaymentDetails makePayment(UUID currentUserId,
+      UUID paymentId,
+      MakePaymentRequestDto makePaymentRequestDto);
+
+  PaymentDetails changePaymentStatus(UUID currentUserId,
+      UUID paymentId,
+      PaymentStatus newPaymentStatus);
 }

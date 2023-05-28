@@ -1,11 +1,10 @@
 package com.bmo.common.market_service.client;
 
+import java.util.UUID;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.UUID;
 
 @FeignClient(name = "market-service-client", url = "${feign.client.config.market-service.url}")
 public interface MarketServiceClient {

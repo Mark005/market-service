@@ -10,7 +10,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ProductItemCreateDto {
 
-    private UUID productId;
+  private UUID productId;
 
-    private Integer itemsCount;
+  private Integer itemsCount;
 }

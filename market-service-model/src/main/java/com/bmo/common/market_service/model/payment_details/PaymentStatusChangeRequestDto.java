@@ -10,5 +10,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class PaymentStatusChangeRequestDto {
 
-    private PaymentStatusDto paymentStatusDto;
+  private PaymentStatusDto paymentStatusDto;
 }

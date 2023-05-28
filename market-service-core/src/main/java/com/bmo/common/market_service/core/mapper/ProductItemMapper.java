@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapStructCommonConfig.class)
 public interface ProductItemMapper {
 
-    ProductItemResponseDto mapToResponseDto(ProductItem productItem);
+  ProductItemResponseDto mapToResponseDto(ProductItem productItem);
 }

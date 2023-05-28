@@ -10,8 +10,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructCommonConfig.class)
 public interface CategoryMapper {
-    List<CategoryResponseDto> mapToResponseDto(List<Category> categories);
 
-    @Mapping(target = "parentCategoryId", source = "parentCategory.id")
-    CategorySimpleResponseDto mapToResponseDto(Category category);
+  List<CategoryResponseDto> mapToResponseDto(List<Category> categories);
+
+  @Mapping(target = "parentCategoryId", source = "parentCategory.id")
+  CategorySimpleResponseDto mapToResponseDto(Category category);
 }

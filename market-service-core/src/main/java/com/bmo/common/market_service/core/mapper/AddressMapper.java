@@ -13,15 +13,15 @@ import org.mapstruct.MappingTarget;
 @Mapper(config = MapStructCommonConfig.class)
 public interface AddressMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", ignore = true)
-    Address mapFromCreateDto(AddressCreateDto newAddress);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "user", ignore = true)
+  Address mapFromCreateDto(AddressCreateDto newAddress);
 
-    AddressResponseDto mapToResponseDto(Address address);
+  AddressResponseDto mapToResponseDto(Address address);
 
-    List<AddressResponseDto> mapToResponseDto(List<Address> addresses);
+  List<AddressResponseDto> mapToResponseDto(List<Address> addresses);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", ignore = true)
-    Address merge(@MappingTarget Address userFromDb, AddressUpdateDto updatedAddress);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "user", ignore = true)
+  Address merge(@MappingTarget Address userFromDb, AddressUpdateDto updatedAddress);
 }

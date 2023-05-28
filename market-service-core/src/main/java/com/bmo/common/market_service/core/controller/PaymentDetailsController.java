@@ -24,32 +24,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PaymentDetailsController {
 
-    private final PaymentDetailsService paymentDetailsService;
-    private final PaymentDetailsMapper paymentDetailsMapper;
-    private final EnumMapper enumMapper;
+  private final PaymentDetailsService paymentDetailsService;
+  private final PaymentDetailsMapper paymentDetailsMapper;
+  private final EnumMapper enumMapper;
 
-    @PatchMapping("/users/current/payment-details/{id}/pay")
-    public ResponseEntity<PaymentDetailsResponseDto> makePayment(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
-            @NotNull @PathVariable("id") UUID paymentId,
-            @RequestBody MakePaymentRequestDto makePaymentRequestDto) {
+  @PatchMapping("/users/current/payment-details/{id}/pay")
+  public ResponseEntity<PaymentDetailsResponseDto> makePayment(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
+      @NotNull @PathVariable("id") UUID paymentId,
+      @RequestBody MakePaymentRequestDto makePaymentRequestDto) {
 
-        PaymentDetails paymentDetails = paymentDetailsService.makePayment(currentUserId, paymentId, makePaymentRequestDto);
-        PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
-        return ResponseEntity.ok(responseDto);
-    }
+    PaymentDetails paymentDetails = paymentDetailsService.makePayment(currentUserId, paymentId, makePaymentRequestDto);
+    PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @PatchMapping("/users/current/payment-details/{id}/status")
-    public ResponseEntity<PaymentDetailsResponseDto> updatePaymentStatus(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
-            @NotNull @PathVariable("id") UUID paymentId,
-            @RequestBody PaymentStatusChangeRequestDto paymentStatusChangeRequestDto) {
+  @PatchMapping("/users/current/payment-details/{id}/status")
+  public ResponseEntity<PaymentDetailsResponseDto> updatePaymentStatus(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
+      @NotNull @PathVariable("id") UUID paymentId,
+      @RequestBody PaymentStatusChangeRequestDto paymentStatusChangeRequestDto) {
 
-        PaymentStatusDto paymentStatusDto = paymentStatusChangeRequestDto.getPaymentStatusDto();
-        PaymentStatus paymentStatus = enumMapper.map(paymentStatusDto);
-        PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(currentUserId, paymentId,
-            paymentStatus);
-        PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
-        return ResponseEntity.ok(responseDto);
-    }
+    PaymentStatusDto paymentStatusDto = paymentStatusChangeRequestDto.getPaymentStatusDto();
+    PaymentStatus paymentStatus = enumMapper.map(paymentStatusDto);
+    PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(currentUserId, paymentId,
+        paymentStatus);
+    PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
+    return ResponseEntity.ok(responseDto);
+  }
 }

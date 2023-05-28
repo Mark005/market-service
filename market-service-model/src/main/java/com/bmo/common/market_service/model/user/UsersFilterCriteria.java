@@ -11,9 +11,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class UsersFilterCriteria {
 
-    private String name;
-    private String surname;
-    private String email;
-    private GenderDto gender;
-    private UserStatusDto status;
+  private String name;
+  private String surname;
+  private String email;
+  private GenderDto gender;
+  private UserStatusDto status;
 }

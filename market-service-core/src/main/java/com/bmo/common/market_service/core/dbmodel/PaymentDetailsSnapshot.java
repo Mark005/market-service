@@ -12,9 +12,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class PaymentDetailsSnapshot {
 
-    private UUID id;
+  private UUID id;
 
-    private BigDecimal amount;
+  private BigDecimal amount;
 
-    private PaymentStatus paymentStatus;
+  private PaymentStatus paymentStatus;
 }

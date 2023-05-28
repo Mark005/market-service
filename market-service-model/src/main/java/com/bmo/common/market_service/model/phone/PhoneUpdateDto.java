@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class PhoneUpdateDto {
 
-    private String number;
+  private String number;
 
-    private Boolean isPrimary;
+  private Boolean isPrimary;
 }

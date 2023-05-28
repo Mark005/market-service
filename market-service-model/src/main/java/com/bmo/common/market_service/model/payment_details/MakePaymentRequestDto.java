@@ -10,5 +10,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class MakePaymentRequestDto {
 
-    private PaymentMethodDto paymentMethod;
+  private PaymentMethodDto paymentMethod;
 }

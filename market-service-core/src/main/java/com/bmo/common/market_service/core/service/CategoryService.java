@@ -5,22 +5,22 @@ import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.category.CategoriesFilterCriteria;
 import com.bmo.common.market_service.model.category.CategoryCreateDto;
 import com.bmo.common.market_service.model.category.CategoryUpdateDto;
-import org.springframework.data.domain.Page;
-
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 
 public interface CategoryService {
 
-    Category getCategoryById(UUID categoryId);
+  Category getCategoryById(UUID categoryId);
 
-    List<Category> getAllMainCategoriesWithDependent();
+  List<Category> getAllMainCategoriesWithDependent();
 
-    Page<Category> getCategoriesFiltered(CategoriesFilterCriteria categoriesFilterCriteria, PageRequestDto pageRequestDto);
+  Page<Category> getCategoriesFiltered(CategoriesFilterCriteria categoriesFilterCriteria,
+      PageRequestDto pageRequestDto);
 
-    Category addCategory(CategoryCreateDto newCategory);
+  Category addCategory(CategoryCreateDto newCategory);
 
-    Category updateCategory(UUID categoryId, CategoryUpdateDto categoryUpdateDto);
+  Category updateCategory(UUID categoryId, CategoryUpdateDto categoryUpdateDto);
 
-    void deleteCategory(UUID categoryId);
+  void deleteCategory(UUID categoryId);
 }

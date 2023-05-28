@@ -26,56 +26,56 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PhoneController {
 
-    private final PhoneService phoneService;
-    private final PhoneMapper phoneMapper;
+  private final PhoneService phoneService;
+  private final PhoneMapper phoneMapper;
 
-    @GetMapping("/users/current/phones/{id}")
-    public ResponseEntity<PhoneResponseDto> getPhoneForCurrentUserById(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @NotNull @PathVariable("id") UUID phoneId) {
+  @GetMapping("/users/current/phones/{id}")
+  public ResponseEntity<PhoneResponseDto> getPhoneForCurrentUserById(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @NotNull @PathVariable("id") UUID phoneId) {
 
-        Phone phone = phoneService.getPhoneByIdAndUserId(userId, phoneId);
-        PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
-        return ResponseEntity.ok(phoneResponseDto);
-    }
+    Phone phone = phoneService.getPhoneByIdAndUserId(userId, phoneId);
+    PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
+    return ResponseEntity.ok(phoneResponseDto);
+  }
 
-    @GetMapping("/users/current/phones")
-    public ResponseEntity<List<PhoneResponseDto>> getAllPhones(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
+  @GetMapping("/users/current/phones")
+  public ResponseEntity<List<PhoneResponseDto>> getAllPhones(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
-        List<Phone> phones = phoneService.getAllPhonesByUserId(userId);
-        List<PhoneResponseDto> cartResponseDto = phoneMapper.map(phones);
-        return ResponseEntity.ok(cartResponseDto);
-    }
+    List<Phone> phones = phoneService.getAllPhonesByUserId(userId);
+    List<PhoneResponseDto> cartResponseDto = phoneMapper.map(phones);
+    return ResponseEntity.ok(cartResponseDto);
+  }
 
-    @PostMapping("/users/current/phones")
-    public ResponseEntity<PhoneResponseDto> addPhone(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @RequestBody @Valid PhoneCreateDto newPhone) {
+  @PostMapping("/users/current/phones")
+  public ResponseEntity<PhoneResponseDto> addPhone(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @RequestBody @Valid PhoneCreateDto newPhone) {
 
-        Phone phone = phoneService.addPhoneToUser(userId, newPhone);
-        PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
-        return ResponseEntity.ok(phoneResponseDto);
-    }
+    Phone phone = phoneService.addPhoneToUser(userId, newPhone);
+    PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
+    return ResponseEntity.ok(phoneResponseDto);
+  }
 
-    @PutMapping("/users/current/phones/{id}")
-    public ResponseEntity<PhoneResponseDto> updatePhone(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @NotNull @PathVariable("id") UUID phoneId,
-            @RequestBody @Valid PhoneUpdateDto updatedPhone) {
+  @PutMapping("/users/current/phones/{id}")
+  public ResponseEntity<PhoneResponseDto> updatePhone(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @NotNull @PathVariable("id") UUID phoneId,
+      @RequestBody @Valid PhoneUpdateDto updatedPhone) {
 
-        Phone phone = phoneService.updateUsersPhone(userId, phoneId, updatedPhone);
-        PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
-        return ResponseEntity.ok(phoneResponseDto);
-    }
+    Phone phone = phoneService.updateUsersPhone(userId, phoneId, updatedPhone);
+    PhoneResponseDto phoneResponseDto = phoneMapper.map(phone);
+    return ResponseEntity.ok(phoneResponseDto);
+  }
 
-    @DeleteMapping("/users/current/phones/{id}")
-    public ResponseEntity<Void> deletePhone(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @NotNull @PathVariable("id") UUID phoneId) {
+  @DeleteMapping("/users/current/phones/{id}")
+  public ResponseEntity<Void> deletePhone(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @NotNull @PathVariable("id") UUID phoneId) {
 
-        phoneService.deleteUsersPhone(userId, phoneId);
-        return ResponseEntity.noContent().build();
-    }
+    phoneService.deleteUsersPhone(userId, phoneId);
+    return ResponseEntity.noContent().build();
+  }
 
 }

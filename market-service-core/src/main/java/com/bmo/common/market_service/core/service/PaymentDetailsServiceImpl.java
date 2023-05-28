@@ -13,23 +13,23 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PaymentDetailsServiceImpl implements PaymentDetailsService {
 
-    @Override
-    public PaymentDetails makePayment(UUID currentUserId,
-                                      UUID paymentId,
-                                      MakePaymentRequestDto makePaymentRequestDto) {
-        //ToDo
-        return null;
-    }
+  @Override
+  public PaymentDetails makePayment(UUID currentUserId,
+      UUID paymentId,
+      MakePaymentRequestDto makePaymentRequestDto) {
+    //ToDo
+    return null;
+  }
 
-    @Override
-    public PaymentDetails changePaymentStatus(UUID currentUserId,
-                                              UUID paymentId,
-                                              PaymentStatus newPaymentStatus) {
-        List<PaymentStatus> allowedStatuses = List.of(PaymentStatus.PAID, PaymentStatus.CANCELLED);
-        if (!allowedStatuses.contains(newPaymentStatus)) {
-            throw new MarketServiceBusinessException("Not allowed status [%s]".formatted(newPaymentStatus));
-        }
-        //ToDo
-        return null;
+  @Override
+  public PaymentDetails changePaymentStatus(UUID currentUserId,
+      UUID paymentId,
+      PaymentStatus newPaymentStatus) {
+    List<PaymentStatus> allowedStatuses = List.of(PaymentStatus.PAID, PaymentStatus.CANCELLED);
+    if (!allowedStatuses.contains(newPaymentStatus)) {
+      throw new MarketServiceBusinessException("Not allowed status [%s]".formatted(newPaymentStatus));
     }
+    //ToDo
+    return null;
+  }
 }

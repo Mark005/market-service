@@ -6,9 +6,9 @@ import com.bmo.common.market_service.model.oreder_details.OrderDetailsResponseDt
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructCommonConfig.class,
-        uses = {CategoryMapper.class})
+    uses = {CategoryMapper.class})
 public interface OrderDetailsMapper {
 
 
-    OrderDetailsResponseDto mapToResponseDto(OrderDetails orderDetails);
+  OrderDetailsResponseDto mapToResponseDto(OrderDetails orderDetails);
 }

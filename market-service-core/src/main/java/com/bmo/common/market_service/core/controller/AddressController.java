@@ -26,56 +26,56 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AddressController {
 
-    private final AddressService addressService;
-    private final AddressMapper addressMapper;
+  private final AddressService addressService;
+  private final AddressMapper addressMapper;
 
-    @GetMapping("/users/current/addresses/{id}")
-    public ResponseEntity<AddressResponseDto> getAddressForCurrentUserById(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @NotNull @PathVariable("id") UUID addressId) {
+  @GetMapping("/users/current/addresses/{id}")
+  public ResponseEntity<AddressResponseDto> getAddressForCurrentUserById(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @NotNull @PathVariable("id") UUID addressId) {
 
-        Address address = addressService.getAddressByIdAndUserId(userId, addressId);
-        AddressResponseDto addressResponseDto = addressMapper.mapToResponseDto(address);
-        return ResponseEntity.ok(addressResponseDto);
-    }
+    Address address = addressService.getAddressByIdAndUserId(userId, addressId);
+    AddressResponseDto addressResponseDto = addressMapper.mapToResponseDto(address);
+    return ResponseEntity.ok(addressResponseDto);
+  }
 
-    @GetMapping("/users/current/addresses")
-    public ResponseEntity<List<AddressResponseDto>> getAllAddresses(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
+  @GetMapping("/users/current/addresses")
+  public ResponseEntity<List<AddressResponseDto>> getAllAddresses(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
-        List<Address> addresses = addressService.getAllAddressesByUserId(userId);
-        List<AddressResponseDto> cartResponseDto = addressMapper.mapToResponseDto(addresses);
-        return ResponseEntity.ok(cartResponseDto);
-    }
+    List<Address> addresses = addressService.getAllAddressesByUserId(userId);
+    List<AddressResponseDto> cartResponseDto = addressMapper.mapToResponseDto(addresses);
+    return ResponseEntity.ok(cartResponseDto);
+  }
 
-    @PostMapping("/users/current/addresses")
-    public ResponseEntity<AddressResponseDto> addAddress(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @RequestBody @Valid AddressCreateDto newAddress) {
+  @PostMapping("/users/current/addresses")
+  public ResponseEntity<AddressResponseDto> addAddress(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @RequestBody @Valid AddressCreateDto newAddress) {
 
-        Address address = addressService.addAddressToUser(userId, newAddress);
-        AddressResponseDto addressResponseDto = addressMapper.mapToResponseDto(address);
-        return ResponseEntity.ok(addressResponseDto);
-    }
+    Address address = addressService.addAddressToUser(userId, newAddress);
+    AddressResponseDto addressResponseDto = addressMapper.mapToResponseDto(address);
+    return ResponseEntity.ok(addressResponseDto);
+  }
 
-    @PutMapping("/users/current/addresses/{id}")
-    public ResponseEntity<AddressResponseDto> updateAddress(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @NotNull @PathVariable("id") UUID addressId,
-            @RequestBody @Valid AddressUpdateDto updatedAddress) {
+  @PutMapping("/users/current/addresses/{id}")
+  public ResponseEntity<AddressResponseDto> updateAddress(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @NotNull @PathVariable("id") UUID addressId,
+      @RequestBody @Valid AddressUpdateDto updatedAddress) {
 
-        Address address = addressService.updateUsersAddress(userId, addressId, updatedAddress);
-        AddressResponseDto addressResponseDto = addressMapper.mapToResponseDto(address);
-        return ResponseEntity.ok(addressResponseDto);
-    }
+    Address address = addressService.updateUsersAddress(userId, addressId, updatedAddress);
+    AddressResponseDto addressResponseDto = addressMapper.mapToResponseDto(address);
+    return ResponseEntity.ok(addressResponseDto);
+  }
 
-    @DeleteMapping("/users/current/addresses/{id}")
-    public ResponseEntity<Void> deleteAddress(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @NotNull @PathVariable("id") UUID addressId) {
+  @DeleteMapping("/users/current/addresses/{id}")
+  public ResponseEntity<Void> deleteAddress(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @NotNull @PathVariable("id") UUID addressId) {
 
-        addressService.deleteUsersAddress(userId, addressId);
-        return ResponseEntity.noContent().build();
-    }
+    addressService.deleteUsersAddress(userId, addressId);
+    return ResponseEntity.noContent().build();
+  }
 
 }

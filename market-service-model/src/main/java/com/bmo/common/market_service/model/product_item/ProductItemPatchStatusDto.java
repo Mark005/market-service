@@ -10,5 +10,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class ProductItemPatchStatusDto {
 
-    private ProductItemStatusDto status;
+  private ProductItemStatusDto status;
 }

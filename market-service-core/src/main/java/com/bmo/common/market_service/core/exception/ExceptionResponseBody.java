@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ExceptionResponseBody {
+
   private Integer status;
   private String error;
   private String message;

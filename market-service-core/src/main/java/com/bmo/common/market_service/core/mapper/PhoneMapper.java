@@ -13,15 +13,15 @@ import org.mapstruct.MappingTarget;
 @Mapper(config = MapStructCommonConfig.class)
 public interface PhoneMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", ignore = true)
-    Phone mapFromCreateDto(PhoneCreateDto newPhone);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "user", ignore = true)
+  Phone mapFromCreateDto(PhoneCreateDto newPhone);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", ignore = true)
-    Phone merge(@MappingTarget Phone target, PhoneUpdateDto updatedPhone);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "user", ignore = true)
+  Phone merge(@MappingTarget Phone target, PhoneUpdateDto updatedPhone);
 
-    PhoneResponseDto map(Phone address);
+  PhoneResponseDto map(Phone address);
 
-    List<PhoneResponseDto> map(List<Phone> addresses);
+  List<PhoneResponseDto> map(List<Phone> addresses);
 }

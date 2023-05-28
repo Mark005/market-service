@@ -9,5 +9,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class CategoriesFilterCriteria {
 
-    private String name;
+  private String name;
 }

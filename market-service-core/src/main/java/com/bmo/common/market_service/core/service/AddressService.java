@@ -3,18 +3,18 @@ package com.bmo.common.market_service.core.service;
 import com.bmo.common.market_service.core.dbmodel.Address;
 import com.bmo.common.market_service.model.address.AddressCreateDto;
 import com.bmo.common.market_service.model.address.AddressUpdateDto;
-
 import java.util.List;
 import java.util.UUID;
 
 public interface AddressService {
-    Address getAddressByIdAndUserId(UUID userId, UUID addressId);
 
-    List<Address> getAllAddressesByUserId(UUID userId);
+  Address getAddressByIdAndUserId(UUID userId, UUID addressId);
 
-    Address addAddressToUser(UUID userId, AddressCreateDto newAddress);
+  List<Address> getAllAddressesByUserId(UUID userId);
 
-    Address updateUsersAddress(UUID userId, UUID addressId, AddressUpdateDto updatedAddress);
+  Address addAddressToUser(UUID userId, AddressCreateDto newAddress);
 
-    void deleteUsersAddress(UUID userId, UUID addressId);
+  Address updateUsersAddress(UUID userId, UUID addressId, AddressUpdateDto updatedAddress);
+
+  void deleteUsersAddress(UUID userId, UUID addressId);
 }

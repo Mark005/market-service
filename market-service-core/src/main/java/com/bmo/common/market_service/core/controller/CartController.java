@@ -21,44 +21,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CartController {
 
-    private final CartService cartService;
-    private final CartMapper cartMapper;
+  private final CartService cartService;
+  private final CartMapper cartMapper;
 
-    @GetMapping("/users/current/cart")
-    public ResponseEntity<CartResponseDto> getCartWithProducts(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
+  @GetMapping("/users/current/cart")
+  public ResponseEntity<CartResponseDto> getCartWithProducts(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
-        Cart cart = cartService.getCartByUserId(userId);
-        CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
-        return ResponseEntity.ok(cartResponseDto);
-    }
+    Cart cart = cartService.getCartByUserId(userId);
+    CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
+    return ResponseEntity.ok(cartResponseDto);
+  }
 
-    @PatchMapping("/users/current/cart/add-products")
-    public ResponseEntity<CartResponseDto> addProductsToCart(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @RequestBody @Valid ProductsDto productsDto) {
+  @PatchMapping("/users/current/cart/add-products")
+  public ResponseEntity<CartResponseDto> addProductsToCart(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @RequestBody @Valid ProductsDto productsDto) {
 
-        Cart cart = cartService.addProductsToUsersCart(userId, productsDto);
-        CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
-        return ResponseEntity.ok(cartResponseDto);
-    }
+    Cart cart = cartService.addProductsToUsersCart(userId, productsDto);
+    CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
+    return ResponseEntity.ok(cartResponseDto);
+  }
 
-    @PatchMapping("/users/current/cart/remove-products")
-    public ResponseEntity<CartResponseDto> removeProductsFromCart(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @RequestBody @Valid ProductsDto productsDto) {
+  @PatchMapping("/users/current/cart/remove-products")
+  public ResponseEntity<CartResponseDto> removeProductsFromCart(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @RequestBody @Valid ProductsDto productsDto) {
 
-        Cart cart = cartService.removeProductsFromUsersCart(userId, productsDto);
-        CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
-        return ResponseEntity.ok(cartResponseDto);
-    }
+    Cart cart = cartService.removeProductsFromUsersCart(userId, productsDto);
+    CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
+    return ResponseEntity.ok(cartResponseDto);
+  }
 
-    @PatchMapping("/users/current/cart/clear")
-    public ResponseEntity<CartResponseDto> removeAllProductsFromCart(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
+  @PatchMapping("/users/current/cart/clear")
+  public ResponseEntity<CartResponseDto> removeAllProductsFromCart(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
-        Cart cart = cartService.removeAllProductsFromUsersCart(userId);
-        CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
-        return ResponseEntity.ok(cartResponseDto);
-    }
+    Cart cart = cartService.removeAllProductsFromUsersCart(userId);
+    CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
+    return ResponseEntity.ok(cartResponseDto);
+  }
 }

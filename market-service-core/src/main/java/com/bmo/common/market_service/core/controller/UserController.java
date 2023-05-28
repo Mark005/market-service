@@ -27,68 +27,69 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
-    private final UserMapper userMapper;
+  private final UserService userService;
+  private final UserMapper userMapper;
 
-    @GetMapping("/users")
-    public ResponseEntity<Page<UserResponseDto>> getUsersFiltered(UsersFilterCriteria usersFilterCriteria, PageRequestDto pageRequest) {
+  @GetMapping("/users")
+  public ResponseEntity<Page<UserResponseDto>> getUsersFiltered(UsersFilterCriteria usersFilterCriteria,
+      PageRequestDto pageRequest) {
 
-        Page<User> users = userService.getUsersFiltered(usersFilterCriteria, pageRequest);
-        Page<UserResponseDto> responseDto = users.map(userMapper::mapToResponseDto);
-        return ResponseEntity.ok(responseDto);
-    }
+    Page<User> users = userService.getUsersFiltered(usersFilterCriteria, pageRequest);
+    Page<UserResponseDto> responseDto = users.map(userMapper::mapToResponseDto);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @GetMapping("/users/current")
-    public ResponseEntity<UserResponseDto> getCurrentUser(
-            @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId) {
+  @GetMapping("/users/current")
+  public ResponseEntity<UserResponseDto> getCurrentUser(
+      @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId) {
 
-        User user = userService.getUserById(currentUserId);
-        UserResponseDto responseDto = userMapper.mapToResponseDto(user);
-        return ResponseEntity.ok(responseDto);
-    }
+    User user = userService.getUserById(currentUserId);
+    UserResponseDto responseDto = userMapper.mapToResponseDto(user);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<UserResponseDto> getUserById(
-            @NotNull @PathVariable("userId") UUID userId) {
+  @GetMapping("/users/{userId}")
+  public ResponseEntity<UserResponseDto> getUserById(
+      @NotNull @PathVariable("userId") UUID userId) {
 
-        User user = userService.getUserById(userId);
-        UserResponseDto responseDto = userMapper.mapToResponseDto(user);
-        return ResponseEntity.ok(responseDto);
-    }
+    User user = userService.getUserById(userId);
+    UserResponseDto responseDto = userMapper.mapToResponseDto(user);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @PostMapping("/users/register")
-    public ResponseEntity<UserResponseDto> registerUser(
-            @NotNull @RequestHeader(GatewayHeader.SECURITY_USER_ID) UUID securityUserId,
-            @RequestBody @Valid RegisterUserDto registerUserDto) {
+  @PostMapping("/users/register")
+  public ResponseEntity<UserResponseDto> registerUser(
+      @NotNull @RequestHeader(GatewayHeader.SECURITY_USER_ID) UUID securityUserId,
+      @RequestBody @Valid RegisterUserDto registerUserDto) {
 
-        User user = userService.registerUser(securityUserId, registerUserDto);
-        UserResponseDto responseDto = userMapper.mapToResponseDto(user);
-        return ResponseEntity.ok(responseDto);
-    }
+    User user = userService.registerUser(securityUserId, registerUserDto);
+    UserResponseDto responseDto = userMapper.mapToResponseDto(user);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @PatchMapping("/users/current")
-    public ResponseEntity<UserResponseDto> updateCurrentUserInfo(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @RequestBody @Valid UpdateUserDto updateUserDto) {
+  @PatchMapping("/users/current")
+  public ResponseEntity<UserResponseDto> updateCurrentUserInfo(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @RequestBody @Valid UpdateUserDto updateUserDto) {
 
-        User user = userService.updateUserInfoById(userId, updateUserDto);
-        UserResponseDto responseDto = userMapper.mapToResponseDto(user);
-        return ResponseEntity.ok(responseDto);
-    }
+    User user = userService.updateUserInfoById(userId, updateUserDto);
+    UserResponseDto responseDto = userMapper.mapToResponseDto(user);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @PatchMapping("/users/current/delete")
-    public ResponseEntity<Void> deleteCurrentUser(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
+  @PatchMapping("/users/current/delete")
+  public ResponseEntity<Void> deleteCurrentUser(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
-        userService.deleteUserById(userId);
-        return ResponseEntity.noContent().build();
-    }
+    userService.deleteUserById(userId);
+    return ResponseEntity.noContent().build();
+  }
 
-    @PatchMapping("/users/current/recover")
-    public ResponseEntity<Void> recoverCurrentUser(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
+  @PatchMapping("/users/current/recover")
+  public ResponseEntity<Void> recoverCurrentUser(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId) {
 
-        userService.recoverUserById(userId);
-        return ResponseEntity.ok().build();
-    }
+    userService.recoverUserById(userId);
+    return ResponseEntity.ok().build();
+  }
 }

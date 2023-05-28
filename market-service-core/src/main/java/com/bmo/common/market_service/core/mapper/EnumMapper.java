@@ -14,11 +14,11 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapStructCommonConfig.class)
 public interface EnumMapper {
 
-    UserStatus map(UserStatusDto user);
+  UserStatus map(UserStatusDto user);
 
-    Gender map(GenderDto gender);
+  Gender map(GenderDto gender);
 
-    PaymentStatus map(PaymentStatusDto paymentStatus);
+  PaymentStatus map(PaymentStatusDto paymentStatus);
 
-    ProductItemStatus map(ProductItemStatusDto productItemStatus);
+  ProductItemStatus map(ProductItemStatusDto productItemStatus);
 }

@@ -10,9 +10,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 public class MarketServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MarketServiceApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(MarketServiceApplication.class, args);
+  }
 
 }
 

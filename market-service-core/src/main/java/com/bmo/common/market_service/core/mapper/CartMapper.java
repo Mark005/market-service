@@ -6,7 +6,8 @@ import com.bmo.common.market_service.model.cart.CartResponseDto;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructCommonConfig.class,
-        uses = {CategoryMapper.class})
+    uses = {CategoryMapper.class})
 public interface CartMapper {
-    CartResponseDto mapToResponseDto(Cart cart);
+
+  CartResponseDto mapToResponseDto(Cart cart);
 }

@@ -26,47 +26,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderDetailsController {
 
-    private final OrderDetailsService orderDetailsService;
-    private final OrderDetailsMapper orderDetailsMapper;
+  private final OrderDetailsService orderDetailsService;
+  private final OrderDetailsMapper orderDetailsMapper;
 
-    @GetMapping("/users/current/orders")
-    public ResponseEntity<Page<OrderDetailsResponseDto>> getOrdersForCurrentUser(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            UsersFilterCriteria usersFilterCriteria,
-            PageRequestDto pageRequest) {
+  @GetMapping("/users/current/orders")
+  public ResponseEntity<Page<OrderDetailsResponseDto>> getOrdersForCurrentUser(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      UsersFilterCriteria usersFilterCriteria,
+      PageRequestDto pageRequest) {
 
-        Page<OrderDetails> orders = orderDetailsService.getOrdersFiltered(userId, usersFilterCriteria, pageRequest);
-        Page<OrderDetailsResponseDto> responsePage = orders.map(orderDetailsMapper::mapToResponseDto);
-        return ResponseEntity.ok(responsePage);
-    }
+    Page<OrderDetails> orders = orderDetailsService.getOrdersFiltered(userId, usersFilterCriteria, pageRequest);
+    Page<OrderDetailsResponseDto> responsePage = orders.map(orderDetailsMapper::mapToResponseDto);
+    return ResponseEntity.ok(responsePage);
+  }
 
-    @GetMapping("/users/current/orders/{id}")
-    public ResponseEntity<OrderDetailsResponseDto> getCurrentUsersOrderById(
-            @NotNull @PathVariable("id") UUID orderId,
-            @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId) {
+  @GetMapping("/users/current/orders/{id}")
+  public ResponseEntity<OrderDetailsResponseDto> getCurrentUsersOrderById(
+      @NotNull @PathVariable("id") UUID orderId,
+      @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId) {
 
-        OrderDetails order = orderDetailsService.getOrderByIdAndUserId(orderId, currentUserId);
-        OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
-        return ResponseEntity.ok(responseDto);
-    }
+    OrderDetails order = orderDetailsService.getOrderByIdAndUserId(orderId, currentUserId);
+    OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @PostMapping("/users/current/orders")
-    public ResponseEntity<OrderDetailsResponseDto> createOrder(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
-            @RequestBody @Valid OrderCreateDto orderCreateDto) {
+  @PostMapping("/users/current/orders")
+  public ResponseEntity<OrderDetailsResponseDto> createOrder(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
+      @RequestBody @Valid OrderCreateDto orderCreateDto) {
 
-        OrderDetails order = orderDetailsService.createOrder(currentUserId, orderCreateDto);
-        OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
-        return ResponseEntity.ok(responseDto);
-    }
+    OrderDetails order = orderDetailsService.createOrder(currentUserId, orderCreateDto);
+    OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @PatchMapping("/users/current/orders/{id}/cancel")
-    public ResponseEntity<OrderDetailsResponseDto> updateOrderById(
-            @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-            @NotNull @PathVariable("id") UUID orderId) {
+  @PatchMapping("/users/current/orders/{id}/cancel")
+  public ResponseEntity<OrderDetailsResponseDto> updateOrderById(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+      @NotNull @PathVariable("id") UUID orderId) {
 
-        OrderDetails order = orderDetailsService.cancelOrder(userId, orderId);
-        OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
-        return ResponseEntity.ok(responseDto);
-    }
+    OrderDetails order = orderDetailsService.cancelOrder(userId, orderId);
+    OrderDetailsResponseDto responseDto = orderDetailsMapper.mapToResponseDto(order);
+    return ResponseEntity.ok(responseDto);
+  }
 }

@@ -24,45 +24,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductItemController {
 
-    private final ProductItemService productItemService;
-    private final ProductItemMapper productItemMapper;
-    private final EnumMapper enumMapper;
+  private final ProductItemService productItemService;
+  private final ProductItemMapper productItemMapper;
+  private final EnumMapper enumMapper;
 
-    @PostMapping("/product-item")
-    public ResponseEntity<ProductItemResponseDto> createProductItem(
-            @RequestBody ProductItemCreateDto productCreateDto) {
+  @PostMapping("/product-item")
+  public ResponseEntity<ProductItemResponseDto> createProductItem(
+      @RequestBody ProductItemCreateDto productCreateDto) {
 
-        ProductItem productItem = productItemService.createProductItem(productCreateDto);
-        ProductItemResponseDto responseDto = productItemMapper.mapToResponseDto(productItem);
-        return ResponseEntity.ok(responseDto);
-    }
+    ProductItem productItem = productItemService.createProductItem(productCreateDto);
+    ProductItemResponseDto responseDto = productItemMapper.mapToResponseDto(productItem);
+    return ResponseEntity.ok(responseDto);
+  }
 
-    @GetMapping("/product-item/{id}")
-    public ResponseEntity<ProductItemResponseDto> getProductItemById(
-        @PathVariable("id") UUID productItemId) {
+  @GetMapping("/product-item/{id}")
+  public ResponseEntity<ProductItemResponseDto> getProductItemById(
+      @PathVariable("id") UUID productItemId) {
 
-        ProductItem productItem = productItemService.getProductItemById(productItemId);
-        ProductItemResponseDto productItemResponseDto = productItemMapper.mapToResponseDto(productItem);
-        return ResponseEntity.ok(productItemResponseDto);
-    }
+    ProductItem productItem = productItemService.getProductItemById(productItemId);
+    ProductItemResponseDto productItemResponseDto = productItemMapper.mapToResponseDto(productItem);
+    return ResponseEntity.ok(productItemResponseDto);
+  }
 
-    @PatchMapping("/product-item/{id}/status")
-    public ResponseEntity<ProductItemResponseDto> patchProductItemStatus(
-        @NotNull @PathVariable("id") UUID productItemId,
-        @RequestBody ProductItemPatchStatusDto patchStatusDto) {
+  @PatchMapping("/product-item/{id}/status")
+  public ResponseEntity<ProductItemResponseDto> patchProductItemStatus(
+      @NotNull @PathVariable("id") UUID productItemId,
+      @RequestBody ProductItemPatchStatusDto patchStatusDto) {
 
-        ProductItemStatus productItemStatus = enumMapper.map(patchStatusDto.getStatus());
-        ProductItem product = productItemService.patchProductItemStatus(productItemId, productItemStatus);
-        ProductItemResponseDto productResponseDto = productItemMapper.mapToResponseDto(product);
-        return ResponseEntity.ok(productResponseDto);
-    }
+    ProductItemStatus productItemStatus = enumMapper.map(patchStatusDto.getStatus());
+    ProductItem product = productItemService.patchProductItemStatus(productItemId, productItemStatus);
+    ProductItemResponseDto productResponseDto = productItemMapper.mapToResponseDto(product);
+    return ResponseEntity.ok(productResponseDto);
+  }
 
-    @DeleteMapping("/product-item/{id}")
-    public ResponseEntity<Void> deleteProductItem(
-        @NotNull @PathVariable("id") UUID productItemId) {
+  @DeleteMapping("/product-item/{id}")
+  public ResponseEntity<Void> deleteProductItem(
+      @NotNull @PathVariable("id") UUID productItemId) {
 
-        productItemService.deleteProductItem(productItemId);
-        return ResponseEntity.noContent().build();
-    }
+    productItemService.deleteProductItem(productItemId);
+    return ResponseEntity.noContent().build();
+  }
 
 }

@@ -9,6 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class PageRequestDto {
 
-    private Integer pageSize;
-    private Integer pageNumber;
+  private Integer pageSize;
+  private Integer pageNumber;
 }

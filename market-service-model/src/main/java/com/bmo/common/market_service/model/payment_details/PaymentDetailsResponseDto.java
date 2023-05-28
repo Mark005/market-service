@@ -12,9 +12,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class PaymentDetailsResponseDto {
 
-    private UUID id;
+  private UUID id;
 
-    private BigDecimal amount;
+  private BigDecimal amount;
 
-    private PaymentStatusDto paymentStatus;
+  private PaymentStatusDto paymentStatus;
 }
