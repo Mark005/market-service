@@ -17,6 +17,8 @@ public class CategoryResponseDto {
 
   private String description;
 
+  private String parentCategoryId;
+
   private List<CategoryResponseDto> subCategories;
 
 }

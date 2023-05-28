@@ -13,9 +13,12 @@ public interface CategoryService {
 
   Category getCategoryById(UUID categoryId);
 
+  Category getCategoryByIdVerbose(UUID categoryId);
+
   List<Category> getAllMainCategoriesWithDependent();
 
-  Page<Category> getCategoriesFiltered(CategoriesFilterCriteria categoriesFilterCriteria,
+  Page<Category> getCategoriesFiltered(
+      CategoriesFilterCriteria categoriesFilterCriteria,
       PageRequestDto pageRequestDto);
 
   Category addCategory(CategoryCreateDto newCategory);

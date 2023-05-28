@@ -35,7 +35,16 @@ public class CategoryController {
   public ResponseEntity<CategorySimpleResponseDto> getCategoryById(@NotNull @PathVariable("id") UUID categoryId) {
 
     Category category = categoryService.getCategoryById(categoryId);
-    CategorySimpleResponseDto categoryResponseDto = categoryMapper.mapToResponseDto(category);
+    CategorySimpleResponseDto categoryResponseDto = categoryMapper.mapToSimpleResponseDto(category);
+    return ResponseEntity.ok(categoryResponseDto);
+  }
+
+  @GetMapping("/categories/{id}/verbose")
+  public ResponseEntity<CategoryResponseDto> getAllMainCategoriesWithDependent(
+      @NotNull @PathVariable("id") UUID categoryId) {
+
+    Category category = categoryService.getCategoryByIdVerbose(categoryId);
+    CategoryResponseDto categoryResponseDto = categoryMapper.mapToResponseDto(category);
     return ResponseEntity.ok(categoryResponseDto);
   }
 
@@ -53,7 +62,7 @@ public class CategoryController {
       PageRequestDto pageRequestDto) {
 
     Page<Category> categoriesPage = categoryService.getCategoriesFiltered(categoriesFilterCriteria, pageRequestDto);
-    Page<CategorySimpleResponseDto> categoriesDtoPage = categoriesPage.map(categoryMapper::mapToResponseDto);
+    Page<CategorySimpleResponseDto> categoriesDtoPage = categoriesPage.map(categoryMapper::mapToSimpleResponseDto);
     return ResponseEntity.ok(categoriesDtoPage);
   }
 
@@ -61,7 +70,7 @@ public class CategoryController {
   public ResponseEntity<CategorySimpleResponseDto> addCategory(@RequestBody @Valid CategoryCreateDto newCategory) {
 
     Category category = categoryService.addCategory(newCategory);
-    CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToResponseDto(category);
+    CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToSimpleResponseDto(category);
     return ResponseEntity.ok(categorySimpleResponseDto);
   }
 
@@ -71,7 +80,7 @@ public class CategoryController {
       @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
 
     Category category = categoryService.updateCategory(categoryId, categoryUpdateDto);
-    CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToResponseDto(category);
+    CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToSimpleResponseDto(category);
     return ResponseEntity.ok(categorySimpleResponseDto);
   }
 

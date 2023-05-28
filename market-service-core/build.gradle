@@ -59,7 +59,7 @@ dependencies {
     compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
     compileOnly 'org.mapstruct:mapstruct:1.5.1.Final', 'org.projectlombok:lombok'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "org.mapstruct:mapstruct-processor:1.5.1.Final",
