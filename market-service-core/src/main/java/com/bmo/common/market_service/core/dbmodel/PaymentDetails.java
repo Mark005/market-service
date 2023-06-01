@@ -3,6 +3,7 @@ package com.bmo.common.market_service.core.dbmodel;
 import com.bmo.common.market_service.core.dbmodel.enums.PaymentMethod;
 import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 @Builder
 @Getter
@@ -45,4 +47,20 @@ public class PaymentDetails {
   @OneToOne(mappedBy = "paymentDetails", optional = false, orphanRemoval = true)
   private OrderDetails orderDetails;
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    Category category = (Category) o;
+    return getId() != null && Objects.equals(getId(), category.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }

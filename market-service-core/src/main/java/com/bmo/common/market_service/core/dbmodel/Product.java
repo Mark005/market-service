@@ -1,8 +1,9 @@
 package com.bmo.common.market_service.core.dbmodel;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
+import org.hibernate.Hibernate;
 
+@FieldNameConstants
 @Builder
 @Getter
 @Setter
@@ -42,16 +46,39 @@ public class Product {
 
   private String barcode;
 
-  @ManyToOne
-  @JoinColumn(name = "cart_id")
-  private Cart cart;
+  @ManyToMany(mappedBy = "products")
+  private Set<Cart> carts = new HashSet<>();
 
   @Builder.Default
-  @ManyToMany(mappedBy = "products")
-  private List<Category> categories = new ArrayList<>();
+  @ManyToMany
+  @JoinTable(name = "category_products",
+      joinColumns = @JoinColumn(
+          name = "product_id",
+          referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(
+          name = "category_id",
+          referencedColumnName = "id"))
+  private Set<Category> categories = new HashSet<>();
 
   @Builder.Default
   @OneToMany(mappedBy = "product", orphanRemoval = true)
-  private List<ProductItem> productItems = new ArrayList<>();
+  private Set<ProductItem> productItems = new HashSet<>();
 
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    Category category = (Category) o;
+    return getId() != null && Objects.equals(getId(), category.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }

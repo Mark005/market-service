@@ -2,8 +2,9 @@ package com.bmo.common.market_service.core.dbmodel;
 
 import com.bmo.common.market_service.core.dbmodel.enums.OrderStatus;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 @Builder
 @Getter
@@ -42,7 +44,7 @@ public class OrderDetails {
 
   @Builder.Default
   @OneToMany(mappedBy = "orderDetails", orphanRemoval = true)
-  private List<ProductItem> productItems = new ArrayList<>();
+  private Set<ProductItem> productItems = new HashSet<>();
 
   @OneToOne(orphanRemoval = true)
   @JoinColumn(name = "payment_details_id")
@@ -50,6 +52,22 @@ public class OrderDetails {
 
   @Builder.Default
   @OneToMany(mappedBy = "orderDetails", orphanRemoval = true)
-  private List<OrderHistory> orderHistories = new ArrayList<>();
+  private Set<OrderHistory> orderHistories = new HashSet<>();
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    Category category = (Category) o;
+    return getId() != null && Objects.equals(getId(), category.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }

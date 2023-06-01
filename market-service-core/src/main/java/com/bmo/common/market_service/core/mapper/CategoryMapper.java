@@ -7,10 +7,13 @@ import com.bmo.common.market_service.model.category.CategoryResponseDto;
 import com.bmo.common.market_service.model.category.CategorySimpleResponseDto;
 import com.bmo.common.market_service.model.category.CategoryUpdateDto;
 import java.util.List;
+import java.util.UUID;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(config = MapStructCommonConfig.class, nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL)
 public interface CategoryMapper {
@@ -26,21 +29,15 @@ public interface CategoryMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "subCategories", ignore = true)
   @Mapping(target = "products", ignore = true)
-  @Mapping(target = "parentCategory", expression = "java(mapParentCategory(newCategory))")
+  @Mapping(target = "parentCategory", source = "parentCategoryId")
   Category mapFromCreateDto(CategoryCreateDto newCategory);
-
-  default Category mapParentCategory(CategoryCreateDto newCategory) {
-    if (newCategory == null || newCategory.getParentCategoryId() == null) {
-      return null;
-    }
-
-    return Category.builder()
-        .id(newCategory.getParentCategoryId())
-        .build();
-  }
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "subCategories", ignore = true)
   @Mapping(target = "products", ignore = true)
+  @Mapping(target = "parentCategory", source = "parentCategoryId")
   Category merge(@MappingTarget Category categoryFromDb, CategoryUpdateDto categoryUpdateDto);
+
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  Category mapParentCategory(UUID id);
 }

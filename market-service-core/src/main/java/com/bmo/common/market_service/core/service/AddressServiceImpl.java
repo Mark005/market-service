@@ -59,6 +59,10 @@ public class AddressServiceImpl implements AddressService {
   @Override
   public void deleteUsersAddress(UUID userId, UUID addressId) {
     addressRepository.findByIdAndUserId(addressId, userId)
-        .ifPresent(addressRepository::delete);
+        .ifPresentOrElse(addressRepository::delete,
+            () -> {
+              throw new EntityNotFoundException(
+                  "Address with id [%s] for user with id [%s] not found".formatted(addressId, userId));
+            });
   }
 }

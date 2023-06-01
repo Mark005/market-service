@@ -1,7 +1,6 @@
 package com.bmo.common.market_service.model.product_item;
 
-import java.util.UUID;
-import javax.validation.constraints.Min;
+import com.bmo.common.market_service.model.enums.ProductItemStatusDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +8,8 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class ProductItemCreateDto {
+public class ProductItemFiltersCriteria {
 
-  private UUID productId;
+  private ProductItemStatusDto itemStatus;
 
-  @Min(1)
-  private Integer itemsCount;
 }

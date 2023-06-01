@@ -1,7 +1,7 @@
 package com.bmo.common.market_service.model.product;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +20,6 @@ public class ProductCreateDto {
 
   private String barcode;
 
-  private List<UUID> categoryIds;
+  private Set<UUID> categoryIds;
 
 }

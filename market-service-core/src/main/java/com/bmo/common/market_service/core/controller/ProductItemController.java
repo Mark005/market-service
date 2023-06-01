@@ -1,16 +1,19 @@
 package com.bmo.common.market_service.core.controller;
 
 import com.bmo.common.market_service.core.dbmodel.ProductItem;
-import com.bmo.common.market_service.core.dbmodel.enums.ProductItemStatus;
-import com.bmo.common.market_service.core.mapper.EnumMapper;
 import com.bmo.common.market_service.core.mapper.ProductItemMapper;
 import com.bmo.common.market_service.core.service.ProductItemService;
+import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.product_item.ProductItemCreateDto;
+import com.bmo.common.market_service.model.product_item.ProductItemFiltersCriteria;
 import com.bmo.common.market_service.model.product_item.ProductItemPatchStatusDto;
 import com.bmo.common.market_service.model.product_item.ProductItemResponseDto;
+import java.util.List;
 import java.util.UUID;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,18 +29,17 @@ public class ProductItemController {
 
   private final ProductItemService productItemService;
   private final ProductItemMapper productItemMapper;
-  private final EnumMapper enumMapper;
 
-  @PostMapping("/product-item")
-  public ResponseEntity<ProductItemResponseDto> createProductItem(
-      @RequestBody ProductItemCreateDto productCreateDto) {
+  @PostMapping("/product-items")
+  public ResponseEntity<List<ProductItemResponseDto>> createProductItems(
+      @RequestBody @Valid ProductItemCreateDto productCreateDto) {
 
-    ProductItem productItem = productItemService.createProductItem(productCreateDto);
-    ProductItemResponseDto responseDto = productItemMapper.mapToResponseDto(productItem);
+    List<ProductItem> productItem = productItemService.createProductItems(productCreateDto);
+    List<ProductItemResponseDto> responseDto = productItemMapper.mapToResponseDto(productItem);
     return ResponseEntity.ok(responseDto);
   }
 
-  @GetMapping("/product-item/{id}")
+  @GetMapping("/product-items/{id}")
   public ResponseEntity<ProductItemResponseDto> getProductItemById(
       @PathVariable("id") UUID productItemId) {
 
@@ -46,18 +48,29 @@ public class ProductItemController {
     return ResponseEntity.ok(productItemResponseDto);
   }
 
-  @PatchMapping("/product-item/{id}/status")
+  @GetMapping("/product-items/product/{id}")
+  public ResponseEntity<Page<ProductItemResponseDto>> getProductItemsByProductId(
+      @PathVariable("id") UUID productId,
+      ProductItemFiltersCriteria filtersCriteria,
+      PageRequestDto pageRequest) {
+
+    Page<ProductItemResponseDto> productItemsPage =
+        productItemService.getProductItemsByProductId(productId, filtersCriteria, pageRequest)
+            .map(productItemMapper::mapToResponseDto);
+    return ResponseEntity.ok(productItemsPage);
+  }
+
+  @PatchMapping("/product-items/{id}/status")
   public ResponseEntity<ProductItemResponseDto> patchProductItemStatus(
       @NotNull @PathVariable("id") UUID productItemId,
       @RequestBody ProductItemPatchStatusDto patchStatusDto) {
 
-    ProductItemStatus productItemStatus = enumMapper.map(patchStatusDto.getStatus());
-    ProductItem product = productItemService.patchProductItemStatus(productItemId, productItemStatus);
+    ProductItem product = productItemService.patchProductItemStatus(productItemId, patchStatusDto);
     ProductItemResponseDto productResponseDto = productItemMapper.mapToResponseDto(product);
     return ResponseEntity.ok(productResponseDto);
   }
 
-  @DeleteMapping("/product-item/{id}")
+  @DeleteMapping("/product-items/{id}")
   public ResponseEntity<Void> deleteProductItem(
       @NotNull @PathVariable("id") UUID productItemId) {
 

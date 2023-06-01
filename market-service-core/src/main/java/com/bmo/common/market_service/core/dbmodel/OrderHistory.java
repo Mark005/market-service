@@ -3,6 +3,7 @@ package com.bmo.common.market_service.core.dbmodel;
 import com.bmo.common.market_service.core.dbmodel.enums.OrderStatus;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -53,5 +55,22 @@ public class OrderHistory {
   @ManyToOne(optional = false)
   @JoinColumn(name = "order_details_id", nullable = false)
   private OrderDetails orderDetails;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    Category category = (Category) o;
+    return getId() != null && Objects.equals(getId(), category.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 
 }

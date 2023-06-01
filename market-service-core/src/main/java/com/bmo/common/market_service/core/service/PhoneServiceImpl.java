@@ -58,6 +58,10 @@ public class PhoneServiceImpl implements PhoneService {
   @Override
   public void deleteUsersPhone(UUID userId, UUID phoneId) {
     phoneRepository.findByIdAndUserId(phoneId, userId)
-        .ifPresent(phoneRepository::delete);
+        .ifPresentOrElse(phoneRepository::delete,
+            () -> {
+              throw new EntityNotFoundException(
+                  "Phone with id [%s] for user with id [%s] not found".formatted(phoneId, userId));
+            });
   }
 }

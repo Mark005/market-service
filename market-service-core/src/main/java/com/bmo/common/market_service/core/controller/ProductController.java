@@ -3,6 +3,7 @@ package com.bmo.common.market_service.core.controller;
 import com.bmo.common.market_service.core.dbmodel.Product;
 import com.bmo.common.market_service.core.mapper.ProductMapper;
 import com.bmo.common.market_service.core.service.ProductService;
+import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.product.ProductCreateDto;
 import com.bmo.common.market_service.model.product.ProductFiltersCriteria;
 import com.bmo.common.market_service.model.product.ProductResponseDto;
@@ -38,9 +39,10 @@ public class ProductController {
 
   @GetMapping("/product")
   public ResponseEntity<Page<ProductResponseDto>> getProductsFiltered(
-      ProductFiltersCriteria productFiltersCriteria) {
+      ProductFiltersCriteria productFiltersCriteria,
+      PageRequestDto pageRequest) {
 
-    Page<Product> productPage = productService.getProductsFiltered(productFiltersCriteria);
+    Page<Product> productPage = productService.getProductsFiltered(productFiltersCriteria, pageRequest);
     Page<ProductResponseDto> responsePage = productPage.map(productMapper::mapToResponseDto);
     return ResponseEntity.ok(responsePage);
   }

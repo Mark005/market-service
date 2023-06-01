@@ -1,8 +1,6 @@
 package com.bmo.common.market_service.core.dbmodel;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
@@ -27,8 +24,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.Hibernate;
 
+@FieldNameConstants
 @Builder
 @Getter
 @Setter
@@ -68,11 +67,8 @@ public class Category {
   private Set<Category> subCategories = new HashSet<>();
 
   @Builder.Default
-  @ManyToMany
-  @JoinTable(name = "category_products",
-      joinColumns = @JoinColumn(name = "category_id"),
-      inverseJoinColumns = @JoinColumn(name = "products_id"))
-  private List<Product> products = new ArrayList<>();
+  @ManyToMany(mappedBy = "categories")
+  private Set<Product> products = new HashSet<>();
 
   @Override
   public boolean equals(Object o) {
