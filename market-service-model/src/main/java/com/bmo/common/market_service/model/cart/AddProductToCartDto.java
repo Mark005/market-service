@@ -1,7 +1,7 @@
 package com.bmo.common.market_service.model.cart;
 
-import java.util.List;
 import java.util.UUID;
+import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +9,11 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class ProductsDto {
+public class AddProductToCartDto {
 
-  private List<UUID> productIds;
+  private UUID productId;
+
+  @Min(1)
+  private Integer quantity;
 
 }

@@ -4,8 +4,8 @@ import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.Cart;
 import com.bmo.common.market_service.core.mapper.CartMapper;
 import com.bmo.common.market_service.core.service.CartService;
+import com.bmo.common.market_service.model.cart.AddProductToCartDto;
 import com.bmo.common.market_service.model.cart.CartResponseDto;
-import com.bmo.common.market_service.model.cart.ProductsDto;
 import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -36,7 +36,7 @@ public class CartController {
   @PatchMapping("/users/current/cart/add-products")
   public ResponseEntity<CartResponseDto> addProductsToCart(
       @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-      @RequestBody @Valid ProductsDto productsDto) {
+      @RequestBody @Valid AddProductToCartDto productsDto) {
 
     Cart cart = cartService.addProductsToUsersCart(userId, productsDto);
     CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);
@@ -46,7 +46,7 @@ public class CartController {
   @PatchMapping("/users/current/cart/remove-products")
   public ResponseEntity<CartResponseDto> removeProductsFromCart(
       @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
-      @RequestBody @Valid ProductsDto productsDto) {
+      @RequestBody @Valid AddProductToCartDto productsDto) {
 
     Cart cart = cartService.removeProductsFromUsersCart(userId, productsDto);
     CartResponseDto cartResponseDto = cartMapper.mapToResponseDto(cart);

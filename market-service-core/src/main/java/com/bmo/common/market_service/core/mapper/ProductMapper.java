@@ -14,7 +14,7 @@ import org.mapstruct.MappingTarget;
 public interface ProductMapper {
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "carts", ignore = true)
+  @Mapping(target = "cartProducts", ignore = true)
   @Mapping(target = "productItems", ignore = true)
   @Mapping(target = "categories", source = "categoryIds")
   Product mapFromCreateDto(ProductCreateDto productCreateDto);
@@ -22,7 +22,7 @@ public interface ProductMapper {
   ProductResponseDto mapToResponseDto(Product product);
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "carts", ignore = true)
+  @Mapping(target = "cartProducts", ignore = true)
   @Mapping(target = "productItems", ignore = true)
   @Mapping(target = "categories", source = "categoryIds")
   Product merge(@MappingTarget Product productFromDb, ProductUpdateDto productUpdateDto);

@@ -2,6 +2,7 @@ package com.bmo.common.market_service.core.dbmodel;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -46,8 +47,9 @@ public class Product {
 
   private String barcode;
 
-  @ManyToMany(mappedBy = "products")
-  private Set<Cart> carts = new HashSet<>();
+  @Builder.Default
+  @OneToMany(mappedBy = "product", orphanRemoval = true)
+  private Set<CartProduct> cartProducts = new LinkedHashSet<>();
 
   @Builder.Default
   @ManyToMany

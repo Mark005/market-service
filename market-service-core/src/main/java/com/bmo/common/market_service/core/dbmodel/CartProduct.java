@@ -1,8 +1,6 @@
 package com.bmo.common.market_service.core.dbmodel;
 
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
-import javax.persistence.NamedSubgraph;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +17,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Builder
 @Getter
@@ -34,36 +24,23 @@ import org.hibernate.annotations.FetchMode;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@NamedEntityGraphs(
-    @NamedEntityGraph(name = "fullCart",
-        attributeNodes = {
-            @NamedAttributeNode(value = "cartProducts", subgraph = "cartProducts")
-        },
-        subgraphs = {
-            @NamedSubgraph(
-                name = "cartProducts",
-                attributeNodes = {
-                    @NamedAttributeNode("product")
-                })
-        }))
-@Table(name = "cart")
-public class Cart {
+@Table(name = "cart_product")
+public class CartProduct {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private UUID id;
 
-  @Builder.Default
-  @Fetch(FetchMode.JOIN)
-  @OneToMany(mappedBy = "cart", orphanRemoval = true, fetch = FetchType.EAGER)
-  private Set<CartProduct> cartProducts = new LinkedHashSet<>();
+  private Integer quantity;
 
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "cart_id", nullable = false)
+  private Cart cart;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @MapsId
-  @JoinColumn(name = "id")
-  private User user;
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id")
+  private Product product;
 
 
   @Override
