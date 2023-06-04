@@ -3,6 +3,7 @@ package com.bmo.common.market_service.core.dbmodel;
 import com.bmo.common.market_service.core.dbmodel.enums.Gender;
 import com.bmo.common.market_service.core.dbmodel.enums.UserStatus;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -69,6 +70,10 @@ public class User {
       orphanRemoval = true,
       fetch = FetchType.LAZY)
   private Cart cart;
+
+  @Builder.Default
+  @OneToMany(mappedBy = "user", orphanRemoval = true)
+  private Set<UsersOrder> usersOrders = new LinkedHashSet<>();
 
 
   @Override

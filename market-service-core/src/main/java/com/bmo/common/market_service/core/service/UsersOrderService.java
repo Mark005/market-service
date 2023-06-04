@@ -1,21 +1,21 @@
 package com.bmo.common.market_service.core.service;
 
-import com.bmo.common.market_service.core.dbmodel.OrderDetails;
+import com.bmo.common.market_service.core.dbmodel.UsersOrder;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.oreder_details.OrderCreateDto;
 import com.bmo.common.market_service.model.user.UsersFilterCriteria;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 
-public interface OrderDetailsService {
+public interface UsersOrderService {
 
-  Page<OrderDetails> getOrdersFiltered(UUID userId,
+  Page<UsersOrder> getOrdersFiltered(UUID userId,
       UsersFilterCriteria usersFilterCriteria,
       PageRequestDto pageRequest);
 
-  OrderDetails getOrderByIdAndUserId(UUID orderId, UUID currentUserId);
+  UsersOrder getOrderByIdAndUserId(UUID orderId, UUID userId);
 
-  OrderDetails createOrder(UUID currentUserId, OrderCreateDto orderCreateDto);
+  UsersOrder createOrder(UUID userId, OrderCreateDto orderCreateDto);
 
-  OrderDetails cancelOrder(UUID userId, UUID orderId);
+  UsersOrder cancelOrder(UUID userId, UUID orderId);
 }

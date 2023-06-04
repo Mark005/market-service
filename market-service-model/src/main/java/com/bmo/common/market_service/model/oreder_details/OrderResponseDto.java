@@ -14,15 +14,15 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class OrderDetailsResponseDto {
+public class OrderResponseDto {
 
   private UUID id;
 
   private OrderStatusDto orderStatus;
 
-  private ZonedDateTime orderDate;
+  private ZonedDateTime orderDateTime;
 
-  private ZonedDateTime lastUpdateDate;
+  private ZonedDateTime lastUpdateDateTime;
 
   private List<ProductItemWithProductResponseDto> productItems;
 

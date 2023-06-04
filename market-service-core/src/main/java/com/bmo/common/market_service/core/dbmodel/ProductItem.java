@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,11 +36,12 @@ public class ProductItem {
   @Column(name = "id", nullable = false)
   private UUID id;
 
+  @Enumerated(EnumType.STRING)
   private ProductItemStatus status;
 
   @ManyToOne
-  @JoinColumn(name = "order_details_id")
-  private OrderDetails orderDetails;
+  @JoinColumn(name = "users_order_id")
+  private UsersOrder usersOrder;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "product_id", nullable = false)

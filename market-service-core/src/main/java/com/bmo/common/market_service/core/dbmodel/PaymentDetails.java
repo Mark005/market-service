@@ -45,7 +45,7 @@ public class PaymentDetails {
   private PaymentStatus paymentStatus;
 
   @OneToOne(mappedBy = "paymentDetails", optional = false, orphanRemoval = true)
-  private OrderDetails orderDetails;
+  private UsersOrder usersOrder;
 
   @Override
   public boolean equals(Object o) {

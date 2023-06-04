@@ -18,6 +18,7 @@ public interface UserMapper {
   @Mapping(target = "addresses", ignore = true)
   @Mapping(target = "phones", ignore = true)
   @Mapping(target = "cart", ignore = true)
+  @Mapping(target = "usersOrders", ignore = true)
   User mapToEntity(UUID securityUserId, RegisterUserDto registerUserDto);
 
   @Mapping(target = "id", ignore = true)
@@ -26,6 +27,7 @@ public interface UserMapper {
   @Mapping(target = "addresses", ignore = true)
   @Mapping(target = "phones", ignore = true)
   @Mapping(target = "cart", ignore = true)
+  @Mapping(target = "usersOrders", ignore = true)
   User merge(@MappingTarget User user, UpdateUserDto updateUserDto);
 
   UserResponseDto mapToResponseDto(User user);

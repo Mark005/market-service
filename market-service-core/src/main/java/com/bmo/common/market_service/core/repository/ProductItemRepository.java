@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface ProductItemRepository extends JpaRepository<ProductItem, UUID>, JpaSpecificationExecutor<ProductItem> {
 
   Integer countByProductIdAndStatus(UUID productId, ProductItemStatus status);
+
+  ProductItem findFirstByProductIdAndStatus(UUID productId, ProductItemStatus status);
 }

@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class OrderDetailsSnapshotResponseDto {
+public class UsersOrderSnapshotResponseDto {
 
   private UUID id;
 

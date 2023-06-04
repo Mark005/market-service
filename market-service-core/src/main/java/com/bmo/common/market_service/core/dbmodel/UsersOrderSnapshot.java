@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class OrderDetailsSnapshot {
+public class UsersOrderSnapshot {
 
   private UUID id;
   private OrderStatus orderStatus;

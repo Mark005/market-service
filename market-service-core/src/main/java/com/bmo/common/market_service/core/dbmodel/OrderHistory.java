@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,20 +43,22 @@ public class OrderHistory {
   private UUID id;
 
   @Column(name = "old_order_status")
+  @Enumerated(EnumType.STRING)
   private OrderStatus oldOrderStatus;
 
   @Column(name = "new_order_status")
+  @Enumerated(EnumType.STRING)
   private OrderStatus newOrderStatus;
 
   private ZonedDateTime date;
 
   @Type(type = "jsonb")
-  @Column(name = "order_details_snapshot", columnDefinition = "jsonb")
-  private OrderDetailsSnapshot orderDetailsSnapshot;
+  @Column(name = "users_order_snapshot", columnDefinition = "jsonb")
+  private UsersOrderSnapshot usersOrderSnapshot;
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "order_details_id", nullable = false)
-  private OrderDetails orderDetails;
+  @JoinColumn(name = "users_order_id", nullable = false)
+  private UsersOrder usersOrder;
 
   @Override
   public boolean equals(Object o) {

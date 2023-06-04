@@ -20,5 +20,5 @@ public class OrderHistoryResponseDto {
 
   private ZonedDateTime date;
 
-  private OrderDetailsSnapshotResponseDto orderDetailsSnapshot;
+  private UsersOrderSnapshotResponseDto usersOrderSnapshot;
 }
