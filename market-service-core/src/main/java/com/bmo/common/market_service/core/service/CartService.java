@@ -8,10 +8,10 @@ public interface CartService {
 
   Cart getCartByUserId(UUID userId);
 
-  Cart addProductsToUsersCart(UUID userId, AddProductToCartDto productsDto);
+  void addProductsToUsersCart(UUID userId, AddProductToCartDto productsDto);
 
-  Cart removeProductsFromUsersCart(UUID userId, AddProductToCartDto productsDto);
+  void removeProductsFromUsersCart(UUID userId, AddProductToCartDto productsDto);
 
-  Cart removeAllProductsFromUsersCart(UUID userId);
+  void removeAllProductsFromUsersCart(UUID userId);
 
 }

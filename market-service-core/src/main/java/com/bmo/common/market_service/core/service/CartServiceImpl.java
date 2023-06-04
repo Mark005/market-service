@@ -7,11 +7,15 @@ import com.bmo.common.market_service.core.repository.CartProductRepository;
 import com.bmo.common.market_service.core.repository.CartRepository;
 import com.bmo.common.market_service.model.cart.AddProductToCartDto;
 import com.bmo.common.market_service.model.exception.EntityNotFoundException;
+import com.bmo.common.market_service.model.exception.MarketServiceBusinessException;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
@@ -25,15 +29,13 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-//  @Transactional
-  public Cart addProductsToUsersCart(UUID userId, AddProductToCartDto productsDto) {
+  public void addProductsToUsersCart(UUID userId, AddProductToCartDto productsDto) {
     CartProduct cartProduct = cartProductRepository.findByCartUserIdAndProductId(userId,
             productsDto.getProductId())
         .orElseGet(() -> createNewCartProduct(userId, productsDto.getProductId()));
     int finalQuantity = cartProduct.getQuantity() + productsDto.getQuantity();
     cartProduct.setQuantity(finalQuantity);
-    CartProduct saved = cartProductRepository.save(cartProduct);
-    return getCartByUserId(userId);
+    cartProductRepository.save(cartProduct);
   }
 
   private CartProduct createNewCartProduct(UUID userId, UUID productId) {
@@ -46,14 +48,31 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public Cart removeProductsFromUsersCart(UUID userId, AddProductToCartDto productsDto) {
-    //ToDo
-    return null;
+  public void removeProductsFromUsersCart(UUID userId, AddProductToCartDto productsDto) {
+    Optional<CartProduct> cartProductOpt = cartProductRepository.findByCartUserIdAndProductId(userId,
+        productsDto.getProductId());
+    if (cartProductOpt.isEmpty()) {
+      return;
+    }
+
+    CartProduct cartProduct = cartProductOpt.get();
+    int finalQuantity = cartProduct.getQuantity() - productsDto.getQuantity();
+
+    if (finalQuantity < 0) {
+      throw new MarketServiceBusinessException("Quantity of product in a cart can't be negative");
+    }
+
+    if (finalQuantity == 0) {
+      cartProductRepository.delete(cartProduct);
+      return;
+    }
+
+    cartProduct.setQuantity(finalQuantity);
+    cartProductRepository.save(cartProduct);
   }
 
   @Override
-  public Cart removeAllProductsFromUsersCart(UUID userId) {
-    //ToDo
-    return null;
+  public void removeAllProductsFromUsersCart(UUID userId) {
+    cartProductRepository.deleteAllByCartUserId(userId);
   }
 }
