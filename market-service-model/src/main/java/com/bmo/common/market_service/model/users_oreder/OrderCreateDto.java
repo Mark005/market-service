@@ -1,4 +1,4 @@
-package com.bmo.common.market_service.model.oreder_details;
+package com.bmo.common.market_service.model.users_oreder;
 
 import java.util.List;
 import java.util.UUID;

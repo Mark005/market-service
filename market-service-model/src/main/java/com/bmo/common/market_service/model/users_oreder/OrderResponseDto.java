@@ -1,7 +1,6 @@
-package com.bmo.common.market_service.model.oreder_details;
+package com.bmo.common.market_service.model.users_oreder;
 
 import com.bmo.common.market_service.model.enums.OrderStatusDto;
-import com.bmo.common.market_service.model.order_history.OrderHistoryResponseDto;
 import com.bmo.common.market_service.model.payment_details.PaymentDetailsResponseDto;
 import com.bmo.common.market_service.model.product_item.ProductItemWithProductResponseDto;
 import java.time.ZonedDateTime;
@@ -18,15 +17,15 @@ public class OrderResponseDto {
 
   private UUID id;
 
-  private OrderStatusDto orderStatus;
+  private OrderStatusDto status;
 
   private ZonedDateTime orderDateTime;
 
   private ZonedDateTime lastUpdateDateTime;
 
+  private PresentableInfoDto presentableInfo;
+
   private List<ProductItemWithProductResponseDto> productItems;
 
   private PaymentDetailsResponseDto paymentDetails;
-
-  private List<OrderHistoryResponseDto> orderHistories;
 }

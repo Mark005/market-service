@@ -13,7 +13,7 @@ import lombok.Data;
 public class UsersOrderSnapshot {
 
   private UUID id;
-  private OrderStatus orderStatus;
+  private OrderStatus status;
   private ZonedDateTime orderDate;
   private ZonedDateTime lastUpdateDate;
   private PaymentDetailsSnapshot paymentDetailsSnapshot;
