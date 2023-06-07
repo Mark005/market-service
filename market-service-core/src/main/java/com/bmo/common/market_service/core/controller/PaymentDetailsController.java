@@ -14,6 +14,7 @@ import java.util.UUID;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,13 +29,23 @@ public class PaymentDetailsController {
   private final PaymentDetailsMapper paymentDetailsMapper;
   private final EnumMapper enumMapper;
 
+  @GetMapping("/users/current/orders/{id}/payment-details")
+  public ResponseEntity<PaymentDetailsResponseDto> getPaymentDetailsForOrder(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
+      @NotNull @PathVariable("id") UUID orderId) {
+
+    PaymentDetails paymentDetails = paymentDetailsService.getByOrderIdAndUserId(orderId, currentUserId);
+    PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
+    return ResponseEntity.ok(responseDto);
+  }
+
   @PatchMapping("/users/current/payment-details/{id}/pay")
   public ResponseEntity<PaymentDetailsResponseDto> makePayment(
       @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @NotNull @PathVariable("id") UUID paymentId,
       @RequestBody MakePaymentRequestDto makePaymentRequestDto) {
 
-    PaymentDetails paymentDetails = paymentDetailsService.makePayment(currentUserId, paymentId, makePaymentRequestDto);
+    PaymentDetails paymentDetails = paymentDetailsService.makePayment(paymentId, currentUserId, makePaymentRequestDto);
     PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
     return ResponseEntity.ok(responseDto);
   }
@@ -47,7 +58,7 @@ public class PaymentDetailsController {
 
     PaymentStatusDto paymentStatusDto = paymentStatusChangeRequestDto.getPaymentStatusDto();
     PaymentStatus paymentStatus = enumMapper.map(paymentStatusDto);
-    PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(currentUserId, paymentId,
+    PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(paymentId, currentUserId,
         paymentStatus);
     PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
     return ResponseEntity.ok(responseDto);

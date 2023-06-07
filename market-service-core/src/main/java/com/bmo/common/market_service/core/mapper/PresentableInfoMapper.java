@@ -1,7 +1,7 @@
 package com.bmo.common.market_service.core.mapper;
 
 import com.bmo.common.market_service.core.configs.MapStructCommonConfig;
-import com.bmo.common.market_service.core.dbmodel.PresentableInfo;
+import com.bmo.common.market_service.core.dbmodel.OrderInfo;
 import com.bmo.common.market_service.core.dbmodel.Product;
 import com.bmo.common.market_service.core.dbmodel.ProductSnapshot;
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ public interface PresentableInfoMapper {
 
   @Mapping(target = "products", source = "productToQuantity")
   @Mapping(target = "productsPrice", source = "productToQuantity")
-  PresentableInfo map(Map<Product, Integer> productToQuantity);
+  OrderInfo map(Map<Product, Integer> productToQuantity);
 
   default List<ProductSnapshot> mapToProductSnapshot(Map<Product, Integer> productToQuantity) {
     return productToQuantity.entrySet()

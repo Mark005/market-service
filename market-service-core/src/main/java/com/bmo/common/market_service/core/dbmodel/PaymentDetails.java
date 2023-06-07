@@ -9,9 +9,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -44,7 +47,9 @@ public class PaymentDetails {
   @Column(name = "payment_status")
   private PaymentStatus paymentStatus;
 
-  @OneToOne(mappedBy = "paymentDetails", optional = false, orphanRemoval = true)
+  @OneToOne(fetch = FetchType.LAZY)
+  @MapsId
+  @JoinColumn(name = "id")
   private UsersOrder usersOrder;
 
   @Override

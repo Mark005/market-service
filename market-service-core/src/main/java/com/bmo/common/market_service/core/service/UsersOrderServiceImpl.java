@@ -1,27 +1,34 @@
 package com.bmo.common.market_service.core.service;
 
+import com.bmo.common.market_service.core.dbmodel.OrderInfo;
+import com.bmo.common.market_service.core.dbmodel.PaymentDetails;
 import com.bmo.common.market_service.core.dbmodel.Product;
 import com.bmo.common.market_service.core.dbmodel.ProductItem;
 import com.bmo.common.market_service.core.dbmodel.User;
 import com.bmo.common.market_service.core.dbmodel.UsersOrder;
 import com.bmo.common.market_service.core.dbmodel.enums.OrderStatus;
+import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
 import com.bmo.common.market_service.core.dbmodel.enums.ProductItemStatus;
 import com.bmo.common.market_service.core.mapper.PageableMapper;
 import com.bmo.common.market_service.core.mapper.PresentableInfoMapper;
+import com.bmo.common.market_service.core.repository.PaymentDetailsRepository;
 import com.bmo.common.market_service.core.repository.ProductItemRepository;
+import com.bmo.common.market_service.core.repository.ProductRepository;
 import com.bmo.common.market_service.core.repository.UsersOrderRepository;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.exception.EntityNotFoundException;
 import com.bmo.common.market_service.model.exception.MarketServiceBusinessException;
 import com.bmo.common.market_service.model.user.UsersFilterCriteria;
 import com.bmo.common.market_service.model.users_oreder.OrderCreateDto;
+import com.bmo.common.market_service.model.users_oreder.OrderProduct;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,13 +42,62 @@ public class UsersOrderServiceImpl implements UsersOrderService {
 
   private final UsersOrderRepository usersOrderRepository;
   private final ProductItemRepository productItemRepository;
+  private final ProductRepository productRepository;
+  private final PaymentDetailsRepository paymentDetailsRepository;
 
   private final PresentableInfoMapper presentableInfoMapper;
 
   @Override
   public UsersOrder createOrder(UUID userId, OrderCreateDto orderCreateDto) {
+    Set<ProductItem> productItems = bindWithProductItems(orderCreateDto);
+
+    List<OrderProduct> orderProducts = orderCreateDto.getOrderProducts();
+
+    Map<UUID, Integer> productIdToQuantity = orderProducts.stream()
+        .collect(Collectors.toMap(
+            OrderProduct::getProductId,
+            OrderProduct::getQuantity));
+
+    Map<Product, Integer> productToQuantity = productRepository.findAllById(productIdToQuantity.keySet())
+        .stream()
+        .collect(Collectors.toMap(
+            Function.identity(),
+            product -> productIdToQuantity.get(product.getId())));
+
+    OrderInfo orderInfo = presentableInfoMapper.map(productToQuantity);
+    PaymentDetails paymentDetails = generatePaymentDetails(orderInfo);
+
+    ZonedDateTime dateTimeNow = ZonedDateTime.now();
+    UsersOrder usersOrder = UsersOrder.builder()
+        .orderInfo(orderInfo)
+        .status(OrderStatus.ORDERED)
+        .orderDateTime(dateTimeNow)
+        .lastUpdateDateTime(dateTimeNow)
+        .productItems(productItems)
+        .paymentDetails(paymentDetails)
+        .user(User.builder().id(userId).build())
+        .build();
+
+    UsersOrder savedUsersOrder = usersOrderRepository.save(usersOrder);
+
+    productItems.forEach(productItem -> productItem.setUsersOrder(usersOrder));
+    productItemRepository.saveAll(productItems);
+
+    paymentDetails.setUsersOrder(savedUsersOrder);
+    paymentDetailsRepository.save(paymentDetails);
+
+    return savedUsersOrder;
+  }
+
+  private PaymentDetails generatePaymentDetails(OrderInfo  orderInfo) {
+    return PaymentDetails.builder()
+        .paymentStatus(PaymentStatus.REQUIRED)
+        .amount(orderInfo.getProductsPrice())
+        .build();
+  }
+
+  private Set<ProductItem> bindWithProductItems(OrderCreateDto orderCreateDto) {
     Set<ProductItem> productItems = new HashSet<>();
-    Map<Product, Integer> productToQuantity = new HashMap<>();
 
     orderCreateDto.getOrderProducts().forEach(orderProduct -> {
       Integer countOfAvailable =
@@ -63,27 +119,12 @@ public class UsersOrderServiceImpl implements UsersOrderService {
 
       productItemsForOrder.forEach(productItem -> {
         productItem.setStatus(ProductItemStatus.BOOKED);
-        productToQuantity.put(productItem.getProduct(), orderProduct.getQuantity());
       });
 
       productItems.addAll(productItemsForOrder);
     });
-    ZonedDateTime dateTimeNow = ZonedDateTime.now();
-    UsersOrder usersOrder = UsersOrder.builder()
-        .presentableInfo(presentableInfoMapper.map(productToQuantity))
-        .status(OrderStatus.ORDERED)
-        .orderDateTime(dateTimeNow)
-        .lastUpdateDateTime(dateTimeNow)
-        .productItems(productItems)
-        .user(User.builder().id(userId).build())
-        .build();
 
-    UsersOrder savedUsersOrder = usersOrderRepository.save(usersOrder);
-
-    productItems.forEach(productItem -> productItem.setUsersOrder(usersOrder));
-    productItemRepository.saveAll(productItems);
-
-    return savedUsersOrder;
+    return productItems;
   }
 
 
@@ -117,6 +158,7 @@ public class UsersOrderServiceImpl implements UsersOrderService {
       productItem.setStatus(ProductItemStatus.AVAILABLE);
       productItem.setUsersOrder(null);
     });
+    usersOrder.getProductItems().clear();
 
     productItemRepository.saveAll(productItems);
     usersOrderRepository.save(usersOrder);

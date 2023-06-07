@@ -74,15 +74,17 @@ public class UsersOrder {
   private ZonedDateTime lastUpdateDateTime;
 
   @Type(type = "jsonb")
-  @Column(name = "presentable_info", columnDefinition = "jsonb")
-  private PresentableInfo presentableInfo;
+  @Column(name = "order_info", columnDefinition = "jsonb")
+  private OrderInfo orderInfo;
 
   @Builder.Default
   @OneToMany(mappedBy = "usersOrder", orphanRemoval = true)
   private Set<ProductItem> productItems = new HashSet<>();
 
-  @OneToOne(orphanRemoval = true)
-  @JoinColumn(name = "payment_details_id")
+  @OneToOne(
+      mappedBy = "usersOrder",
+      optional = false,
+      orphanRemoval = true)
   private PaymentDetails paymentDetails;
 
   @ManyToOne(optional = false, fetch = FetchType.LAZY)

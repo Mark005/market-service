@@ -1,4 +1,4 @@
-package com.bmo.common.market_service.core.dbmodel;
+package com.bmo.common.market_service.model.users_oreder;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class PresentableInfo {
+public class OrderInfoDto {
 
-  private List<ProductSnapshot> products;
+  private List<ProductSnapshotDto> products;
 
   private BigDecimal productsPrice;
 }

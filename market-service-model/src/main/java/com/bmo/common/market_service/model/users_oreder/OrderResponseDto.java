@@ -23,7 +23,7 @@ public class OrderResponseDto {
 
   private ZonedDateTime lastUpdateDateTime;
 
-  private PresentableInfoDto presentableInfo;
+  private OrderInfoDto orderInfo;
 
   private List<ProductItemWithProductResponseDto> productItems;
 

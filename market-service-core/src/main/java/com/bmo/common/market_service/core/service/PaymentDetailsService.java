@@ -7,11 +7,13 @@ import java.util.UUID;
 
 public interface PaymentDetailsService {
 
-  PaymentDetails makePayment(UUID currentUserId,
-      UUID paymentId,
+  PaymentDetails getByOrderIdAndUserId(UUID orderId, UUID currentUserId);
+
+  PaymentDetails makePayment(UUID paymentId,
+      UUID currentUserId,
       MakePaymentRequestDto makePaymentRequestDto);
 
-  PaymentDetails changePaymentStatus(UUID currentUserId,
-      UUID paymentId,
+  PaymentDetails changePaymentStatus(UUID paymentId,
+      UUID currentUserId,
       PaymentStatus newPaymentStatus);
 }

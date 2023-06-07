@@ -6,4 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PaymentDetailsRepository extends JpaRepository<PaymentDetails, UUID> {
 
+  PaymentDetails findByUsersOrderIdAndUsersOrderUserId(UUID usersOrderId, UUID userId);
+
+  PaymentDetails findByIdAndUsersOrderUserId(UUID id, UUID userId);
 }
