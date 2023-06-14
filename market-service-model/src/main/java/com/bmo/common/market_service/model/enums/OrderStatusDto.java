@@ -4,6 +4,6 @@ public enum OrderStatusDto {
   ORDERED,
   CANCELLED,
   PAYMENT_PENDING,
-  PAYED,
+  PAID,
   PAYMENT_CANCELLED
 }

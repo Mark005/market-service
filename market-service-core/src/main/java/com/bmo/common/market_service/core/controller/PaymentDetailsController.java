@@ -39,27 +39,26 @@ public class PaymentDetailsController {
     return ResponseEntity.ok(responseDto);
   }
 
-  @PatchMapping("/users/current/payment-details/{id}/pay")
+  @PatchMapping("/users/{userId}/payment-details/{paymentId}/pay")
   public ResponseEntity<PaymentDetailsResponseDto> makePayment(
       @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
-      @NotNull @PathVariable("id") UUID paymentId,
+      @NotNull @PathVariable("userId") UUID userId,
+      @NotNull @PathVariable("paymentId") UUID paymentId,
       @RequestBody MakePaymentRequestDto makePaymentRequestDto) {
 
-    PaymentDetails paymentDetails = paymentDetailsService.makePayment(paymentId, currentUserId, makePaymentRequestDto);
+    PaymentDetails paymentDetails = paymentDetailsService.makePayment(paymentId, userId, makePaymentRequestDto);
     PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
     return ResponseEntity.ok(responseDto);
   }
 
-  @PatchMapping("/users/current/payment-details/{id}/status")
+  @PatchMapping("/users/{userId}/payment-details/{paymentId}/status")
   public ResponseEntity<PaymentDetailsResponseDto> updatePaymentStatus(
-      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
-      @NotNull @PathVariable("id") UUID paymentId,
+      @NotNull @PathVariable("userId") UUID userId,
+      @NotNull @PathVariable("paymentId") UUID paymentId,
       @RequestBody PaymentStatusChangeRequestDto paymentStatusChangeRequestDto) {
 
-    PaymentStatusDto paymentStatusDto = paymentStatusChangeRequestDto.getPaymentStatusDto();
-    PaymentStatus paymentStatus = enumMapper.map(paymentStatusDto);
-    PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(paymentId, currentUserId,
-        paymentStatus);
+    PaymentDetails paymentDetails = paymentDetailsService.changePaymentStatus(paymentId, userId,
+        paymentStatusChangeRequestDto);
     PaymentDetailsResponseDto responseDto = paymentDetailsMapper.mapToResponseDto(paymentDetails);
     return ResponseEntity.ok(responseDto);
   }

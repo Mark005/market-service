@@ -64,6 +64,9 @@ public class UsersOrder {
   @Column(name = "id", nullable = false)
   private UUID id;
 
+  @Column(name = "delivery_id")
+  private UUID deliveryId;
+
   @Enumerated(EnumType.STRING)
   private OrderStatus status;
 

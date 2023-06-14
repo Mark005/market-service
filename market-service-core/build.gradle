@@ -38,6 +38,7 @@ dependencies {
     implementation project(':market-service-model')
     implementation 'com.bmo.common:gateway-headers:1.0-SNAPSHOT'
     implementation 'com.bmo.common:auth-service-client:1.0-SNAPSHOT'
+    implementation 'com.bmo.common:delivery-service-client:1.0-SNAPSHOT'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.vladmihalcea:hibernate-types-52:2.21.1'
@@ -50,6 +51,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.security:spring-security-crypto'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'io.github.openfeign:feign-httpclient'
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.2'
 

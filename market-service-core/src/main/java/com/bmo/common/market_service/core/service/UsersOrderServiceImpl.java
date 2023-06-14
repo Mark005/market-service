@@ -1,5 +1,10 @@
 package com.bmo.common.market_service.core.service;
 
+import com.bmo.common.delivery_service.client.DeliveryServiceClient;
+import com.bmo.common.delivery_service.model.rest.ContactPhoneDto;
+import com.bmo.common.delivery_service.model.rest.DeliveryAddressDto;
+import com.bmo.common.delivery_service.model.rest.DeliveryCreateDto;
+import com.bmo.common.delivery_service.model.rest.DeliveryResponseDto;
 import com.bmo.common.market_service.core.dbmodel.OrderInfo;
 import com.bmo.common.market_service.core.dbmodel.PaymentDetails;
 import com.bmo.common.market_service.core.dbmodel.Product;
@@ -9,9 +14,12 @@ import com.bmo.common.market_service.core.dbmodel.UsersOrder;
 import com.bmo.common.market_service.core.dbmodel.enums.OrderStatus;
 import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
 import com.bmo.common.market_service.core.dbmodel.enums.ProductItemStatus;
+import com.bmo.common.market_service.core.mapper.OrderInfoMapper;
 import com.bmo.common.market_service.core.mapper.PageableMapper;
-import com.bmo.common.market_service.core.mapper.PresentableInfoMapper;
+import com.bmo.common.market_service.core.mapper.delivery_service.DeliveryAddressMapper;
+import com.bmo.common.market_service.core.repository.AddressRepository;
 import com.bmo.common.market_service.core.repository.PaymentDetailsRepository;
+import com.bmo.common.market_service.core.repository.PhoneRepository;
 import com.bmo.common.market_service.core.repository.ProductItemRepository;
 import com.bmo.common.market_service.core.repository.ProductRepository;
 import com.bmo.common.market_service.core.repository.UsersOrderRepository;
@@ -25,6 +33,7 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
@@ -32,6 +41,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +54,13 @@ public class UsersOrderServiceImpl implements UsersOrderService {
   private final ProductItemRepository productItemRepository;
   private final ProductRepository productRepository;
   private final PaymentDetailsRepository paymentDetailsRepository;
+  private final AddressRepository addressRepository;
+  private final PhoneRepository phoneRepository;
 
-  private final PresentableInfoMapper presentableInfoMapper;
+  private final DeliveryServiceClient deliveryServiceClient;
+
+  private final OrderInfoMapper orderInfoMapper;
+  private final DeliveryAddressMapper deliveryAddressMapper;
 
   @Override
   public UsersOrder createOrder(UUID userId, OrderCreateDto orderCreateDto) {
@@ -64,7 +79,7 @@ public class UsersOrderServiceImpl implements UsersOrderService {
             Function.identity(),
             product -> productIdToQuantity.get(product.getId())));
 
-    OrderInfo orderInfo = presentableInfoMapper.map(productToQuantity);
+    OrderInfo orderInfo = orderInfoMapper.map(productToQuantity);
     PaymentDetails paymentDetails = generatePaymentDetails(orderInfo);
 
     ZonedDateTime dateTimeNow = ZonedDateTime.now();
@@ -86,8 +101,47 @@ public class UsersOrderServiceImpl implements UsersOrderService {
     paymentDetails.setUsersOrder(savedUsersOrder);
     paymentDetailsRepository.save(paymentDetails);
 
+    savedUsersOrder = createDeliveryAndUpdateOrder(userId,
+        orderCreateDto.getDeliveryTypeId(),
+        orderCreateDto.getDeliveryAddressId(),
+        orderCreateDto.getContactPhoneId(),
+        savedUsersOrder);
+
     return savedUsersOrder;
   }
+
+  private UsersOrder createDeliveryAndUpdateOrder(
+      UUID userId,
+      UUID deliveryTypeId,
+      @Nullable UUID deliveryAddressId,
+      UUID contactPhoneId,
+      UsersOrder usersOrder) {
+
+    DeliveryAddressDto deliveryAddressDto =
+        Optional.ofNullable(deliveryAddressId)
+            .map(addressId -> addressRepository.findByIdAndUserId(deliveryAddressId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Address", deliveryAddressId)))
+            .map(deliveryAddressMapper::mapAddress)
+            .orElse(null);
+
+    ContactPhoneDto contactPhoneDto = phoneRepository.findByIdAndUserId(contactPhoneId, userId)
+        .map(deliveryAddressMapper::mapPhone)
+        .orElseThrow(() -> new EntityNotFoundException("Phone", deliveryAddressId));
+
+    DeliveryCreateDto deliveryCreateDto = DeliveryCreateDto.builder()
+        .deliveryTypeId(deliveryTypeId)
+        .deliveryAddress(deliveryAddressDto)
+        .contactPhone(contactPhoneDto)
+        .build();
+
+    DeliveryResponseDto deliveryResponseDto = deliveryServiceClient.createDelivery(userId, usersOrder.getId(),
+        deliveryCreateDto);
+
+    usersOrder.setDeliveryId(deliveryResponseDto.getId());
+
+    return usersOrderRepository.save(usersOrder);
+  }
+
 
   private PaymentDetails generatePaymentDetails(OrderInfo  orderInfo) {
     return PaymentDetails.builder()

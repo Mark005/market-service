@@ -13,5 +13,9 @@ public class OrderCreateDto {
 
   private List<OrderProduct> orderProducts;
 
+  private UUID deliveryTypeId;
+
   private UUID deliveryAddressId;
+
+  private UUID contactPhoneId;
 }

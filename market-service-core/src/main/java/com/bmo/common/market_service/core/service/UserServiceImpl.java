@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -51,16 +52,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @Transactional
   public User registerUser(@NotNull UUID securityUserId, RegisterUserDto registerUserDto) {
     User user = userMapper.mapToEntity(securityUserId, registerUserDto);
+    user.setStatus(UserStatus.ACTIVE);
+    User savedUser = userRepository.save(user);
 
     Cart cart = new Cart();
+    cart.setUser(savedUser);
     cartRepository.save(cart);
-
-    user.setStatus(UserStatus.ACTIVE);
-    user.setCart(cart);
-    User savedUser = userRepository.save(user);
     return savedUser;
   }
 

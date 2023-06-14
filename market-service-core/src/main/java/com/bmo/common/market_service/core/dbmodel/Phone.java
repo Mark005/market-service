@@ -1,9 +1,12 @@
 package com.bmo.common.market_service.core.dbmodel;
 
+import com.bmo.common.market_service.core.dbmodel.enums.PhoneType;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +34,10 @@ public class Phone {
   @Column(name = "id", nullable = false)
   private UUID id;
 
-  private String number;
+  private String phoneNumber;
+
+  @Enumerated(EnumType.STRING)
+  private PhoneType type;
 
   @Column(name = "is_primary", nullable = false)
   private Boolean isPrimary;

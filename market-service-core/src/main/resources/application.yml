@@ -24,7 +24,5 @@ feign:
     config:
       auth-service:
         url: http://localhost:8081
-
-jwt:
-  valid-duration: PT24H
-  secret: secret
+      delivery-service:
+        url: http://localhost:8083

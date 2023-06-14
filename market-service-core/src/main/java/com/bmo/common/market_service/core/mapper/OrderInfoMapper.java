@@ -12,7 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructCommonConfig.class)
-public interface PresentableInfoMapper {
+public interface OrderInfoMapper {
 
   @Mapping(target = "products", source = "productToQuantity")
   @Mapping(target = "productsPrice", source = "productToQuantity")
