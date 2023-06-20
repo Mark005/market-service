@@ -14,7 +14,6 @@ public class UsersOrderSnapshot {
 
   private UUID id;
   private OrderStatus status;
-  private ZonedDateTime orderDate;
-  private ZonedDateTime lastUpdateDate;
+  private ZonedDateTime orderDateTime;
   private PaymentDetailsSnapshot paymentDetailsSnapshot;
 }

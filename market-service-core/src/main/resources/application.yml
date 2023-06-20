@@ -1,5 +1,5 @@
 server:
-  port: ${SERVICE_PORT:8082}
+  port: ${APPLICATION_PORT:8082}
 
 spring:
   datasource:
@@ -23,6 +23,18 @@ feign:
   client:
     config:
       auth-service:
-        url: http://localhost:8081
+        url: ${AUTH_SERVICE_URL:http://localhost:8081}
       delivery-service:
-        url: http://localhost:8083
+        url: ${DELIVERY_SERVICE_URL:http://localhost:8083}
+
+kafka:
+  consumer:
+    delivery-status-event:
+      topic: ${DELIVERY_STATUS_EVENT_TOPIC:delivery-status-event-local}
+      consumer-group-id: ${DELIVERY_STATUS_EVENT_CONSUMER_GROUP:market-service-delivery-status-event-group-local}
+      cluster:
+        bootstrap-servers: ${DELIVERY_STATUS_EVENT_BOOTSTRAP_SERVERS:localhost:9092}
+
+logging:
+  level:
+    com.bmo.common.market_service: ${APPLICATION_DEBUG_LEVEL:DEBUG}

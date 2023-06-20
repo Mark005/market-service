@@ -13,9 +13,13 @@ public interface UsersOrderService {
       UsersFilterCriteria usersFilterCriteria,
       PageRequestDto pageRequest);
 
+  UsersOrder getOrderById(UUID orderId);
+
   UsersOrder getOrderByIdAndUserId(UUID orderId, UUID userId);
 
   UsersOrder createOrder(UUID userId, OrderCreateDto orderCreateDto);
 
   UsersOrder cancelOrder(UUID userId, UUID orderId);
+
+  UsersOrder saveAndUpdateHistory(UsersOrder usersOrder);
 }

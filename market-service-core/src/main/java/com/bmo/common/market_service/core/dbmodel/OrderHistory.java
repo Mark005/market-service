@@ -42,15 +42,12 @@ public class OrderHistory {
   @Column(name = "id", nullable = false)
   private UUID id;
 
-  @Column(name = "old_order_status")
-  @Enumerated(EnumType.STRING)
-  private OrderStatus oldOrderStatus;
-
   @Column(name = "new_order_status")
   @Enumerated(EnumType.STRING)
   private OrderStatus newOrderStatus;
 
-  private ZonedDateTime date;
+  @Column(name = "update_date_time")
+  private ZonedDateTime updateDateTime;
 
   @Type(type = "jsonb")
   @Column(name = "users_order_snapshot", columnDefinition = "jsonb")

@@ -5,6 +5,9 @@ import com.bmo.common.delivery_service.model.rest.ContactPhoneDto;
 import com.bmo.common.delivery_service.model.rest.DeliveryAddressDto;
 import com.bmo.common.delivery_service.model.rest.DeliveryCreateDto;
 import com.bmo.common.delivery_service.model.rest.DeliveryResponseDto;
+import com.bmo.common.delivery_service.model.rest.DeliveryStatusDto;
+import com.bmo.common.delivery_service.model.rest.DeliveryStatusUpdateDto;
+import com.bmo.common.market_service.core.dbmodel.OrderHistory;
 import com.bmo.common.market_service.core.dbmodel.OrderInfo;
 import com.bmo.common.market_service.core.dbmodel.PaymentDetails;
 import com.bmo.common.market_service.core.dbmodel.Product;
@@ -14,10 +17,12 @@ import com.bmo.common.market_service.core.dbmodel.UsersOrder;
 import com.bmo.common.market_service.core.dbmodel.enums.OrderStatus;
 import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
 import com.bmo.common.market_service.core.dbmodel.enums.ProductItemStatus;
+import com.bmo.common.market_service.core.mapper.OrderHistoryMapper;
 import com.bmo.common.market_service.core.mapper.OrderInfoMapper;
 import com.bmo.common.market_service.core.mapper.PageableMapper;
 import com.bmo.common.market_service.core.mapper.delivery_service.DeliveryAddressMapper;
 import com.bmo.common.market_service.core.repository.AddressRepository;
+import com.bmo.common.market_service.core.repository.OrderHistoryRepository;
 import com.bmo.common.market_service.core.repository.PaymentDetailsRepository;
 import com.bmo.common.market_service.core.repository.PhoneRepository;
 import com.bmo.common.market_service.core.repository.ProductItemRepository;
@@ -56,11 +61,13 @@ public class UsersOrderServiceImpl implements UsersOrderService {
   private final PaymentDetailsRepository paymentDetailsRepository;
   private final AddressRepository addressRepository;
   private final PhoneRepository phoneRepository;
+  private final OrderHistoryRepository orderHistoryRepository;
 
   private final DeliveryServiceClient deliveryServiceClient;
 
   private final OrderInfoMapper orderInfoMapper;
   private final DeliveryAddressMapper deliveryAddressMapper;
+  private final OrderHistoryMapper orderHistoryMapper;
 
   @Override
   public UsersOrder createOrder(UUID userId, OrderCreateDto orderCreateDto) {
@@ -139,7 +146,7 @@ public class UsersOrderServiceImpl implements UsersOrderService {
 
     usersOrder.setDeliveryId(deliveryResponseDto.getId());
 
-    return usersOrderRepository.save(usersOrder);
+    return saveAndUpdateHistory(usersOrder);
   }
 
 
@@ -190,6 +197,12 @@ public class UsersOrderServiceImpl implements UsersOrderService {
   }
 
   @Override
+  public UsersOrder getOrderById(UUID orderId) {
+    return usersOrderRepository.findById(orderId)
+        .orElseThrow(() -> new EntityNotFoundException("UsersOrder", orderId));
+  }
+
+  @Override
   public UsersOrder getOrderByIdAndUserId(UUID orderId, UUID userId) {
     return usersOrderRepository.findByIdAndUserId(orderId, userId)
         .orElseThrow(() -> new EntityNotFoundException(
@@ -202,7 +215,7 @@ public class UsersOrderServiceImpl implements UsersOrderService {
     UsersOrder usersOrder = getOrderByIdAndUserId(orderId, userId);
 
     if (usersOrder.getStatus() != OrderStatus.ORDERED) {
-      throw new MarketServiceBusinessException("Order cant be cancelled");
+      throw new MarketServiceBusinessException("Order can not be cancelled");
     }
 
     usersOrder.setStatus(OrderStatus.CANCELLED);
@@ -215,7 +228,20 @@ public class UsersOrderServiceImpl implements UsersOrderService {
     usersOrder.getProductItems().clear();
 
     productItemRepository.saveAll(productItems);
-    usersOrderRepository.save(usersOrder);
-    return usersOrder;
+    UsersOrder savedUsersOrder = saveAndUpdateHistory(usersOrder);
+
+    DeliveryStatusUpdateDto canceledStatusDto = DeliveryStatusUpdateDto.builder().status(
+        DeliveryStatusDto.CANCELED).build();
+    deliveryServiceClient.updateDeliveryStatus(userId, orderId, canceledStatusDto);
+    return savedUsersOrder;
+  }
+
+  @Override
+  public UsersOrder saveAndUpdateHistory(UsersOrder usersOrder) {
+    UsersOrder saved = usersOrderRepository.save(usersOrder);
+
+    OrderHistory newOrderHistory = orderHistoryMapper.mapHistoryRecord(usersOrder);
+    orderHistoryRepository.save(newOrderHistory);
+    return saved;
   }
 }
