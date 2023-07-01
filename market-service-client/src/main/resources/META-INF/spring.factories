@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.bmo.common.market_service.client.MarketServiceClientAutoconfiguration

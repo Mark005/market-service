@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
     id 'org.springframework.boot' version '2.7.10'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(':market-service-model')
+    api project(':market-service-model')
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
