@@ -1,15 +1,520 @@
 databaseChangeLog:
   - changeSet:
-      id: 202305151720-1
+      id: 1688404356230-1
       author: Mark
       changes:
         - createTable:
-            tableName: app_user
             columns:
               - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: cart_product_pkey
                   name: id
                   type: UUID
+              - column:
+                  name: quantity
+                  type: INTEGER
+              - column:
+                  constraints:
+                    nullable: false
+                  name: cart_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: product_id
+                  type: UUID
+            tableName: cart_product
+  - changeSet:
+      id: 1688404356230-2
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: product_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: barcode
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: numeric(19, 2)
+            tableName: product
+  - changeSet:
+      id: 1688404356230-3
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: category_products_pkey
+                  name: product_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: category_products_pkey
+                  name: category_id
+                  type: UUID
+            tableName: category_products
+  - changeSet:
+      id: 1688404356230-4
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: app_user_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: gender
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: security_user_id
+                  type: UUID
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: surname
+                  type: VARCHAR(255)
+            tableName: app_user
+  - changeSet:
+      id: 1688404356230-5
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: phone_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: is_primary
+                  type: BOOLEAN
+              - column:
+                  name: phone_number
+                  type: VARCHAR(255)
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+              - column:
+                  name: user_id
+                  type: UUID
+            tableName: phone
+  - changeSet:
+      id: 1688404356230-6
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: cart_pkey
+                  name: id
+                  type: UUID
+            tableName: cart
+  - changeSet:
+      id: 1688404356230-7
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: product_item_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: product_id
+                  type: UUID
+              - column:
+                  name: users_order_id
+                  type: UUID
+            tableName: product_item
+  - changeSet:
+      id: 1688404356230-8
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: payment_details_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: amount
+                  type: numeric(19, 2)
+              - column:
+                  name: payment_method
+                  type: VARCHAR(255)
+              - column:
+                  name: payment_status
+                  type: VARCHAR(255)
+            tableName: payment_details
+  - changeSet:
+      id: 1688404356230-9
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: users_order_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: delivery_id
+                  type: UUID
+              - column:
+                  name: last_update_date_time
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: order_date_time
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: order_info
+                  type: JSONB
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: UUID
+            tableName: users_order
+  - changeSet:
+      id: 1688404356230-10
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: address_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: apartment
+                  type: VARCHAR(255)
+              - column:
+                  name: building
+                  type: VARCHAR(255)
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: comment
+                  type: VARCHAR(255)
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: is_primary
+                  type: BOOLEAN
+              - column:
+                  name: postal_code
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: user_id
+                  type: UUID
+            tableName: address
+  - changeSet:
+      id: 1688404356230-11
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: order_history_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: new_order_status
+                  type: VARCHAR(255)
+              - column:
+                  name: update_date_time
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: users_order_snapshot
+                  type: JSONB
+              - column:
+                  constraints:
+                    nullable: false
+                  name: users_order_id
+                  type: UUID
+            tableName: order_history
+  - changeSet:
+      id: 1688404356230-12
+      author: Mark
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: category_pkey
+                  name: id
+                  type: UUID
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: parent_category_id
+                  type: UUID
+            tableName: category
+  - changeSet:
+      id: 1688404356230-13
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: cart_product
+            constraintName: fk_cart_product_on_product
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: product
+            validate: true
+  - changeSet:
+      id: 1688404356230-14
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: cart_id
+            baseTableName: cart_product
+            constraintName: fk_cart_product_on_cart
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: cart
+            validate: true
+  - changeSet:
+      id: 1688404356230-15
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: category_products
+            constraintName: fk_category_products_on_product
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: product
+            validate: true
+  - changeSet:
+      id: 1688404356230-16
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: product_item
+            constraintName: fk_product_item_on_product
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: product
+            validate: true
+  - changeSet:
+      id: 1688404356230-17
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: category_products
+            constraintName: fk_category_products_on_category
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: category
+            validate: true
+  - changeSet:
+      id: 1688404356230-18
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: phone
+            constraintName: fk_phone_on_app_user
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: app_user
+            validate: true
+  - changeSet:
+      id: 1688404356230-19
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: cart
+            constraintName: fk_cart_on_app_user
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: app_user
+            validate: true
+  - changeSet:
+      id: 1688404356230-20
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: address
+            constraintName: fk_address_on_app_user
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: app_user
+            validate: true
+  - changeSet:
+      id: 1688404356230-21
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_order
+            constraintName: fk_users_order_on_app_user
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: app_user
+            validate: true
+  - changeSet:
+      id: 1688404356230-22
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: users_order_id
+            baseTableName: product_item
+            constraintName: fk_product_item_on_users_order
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users_order
+            validate: true
+  - changeSet:
+      id: 1688404356230-23
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: payment_details
+            constraintName: fk_payment_details_on_users_order
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users_order
+            validate: true
+  - changeSet:
+      id: 1688404356230-24
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: users_order_id
+            baseTableName: order_history
+            constraintName: fk_order_history_on_users_order
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users_order
+            validate: true
+  - changeSet:
+      id: 1688404356230-25
+      author: Mark
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: parent_category_id
+            baseTableName: category
+            constraintName: fk_category_on_category
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: category
+            validate: true
