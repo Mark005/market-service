@@ -26,6 +26,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @FieldNameConstants
 @Builder
@@ -46,6 +48,7 @@ import org.hibernate.Hibernate;
                 })
         }))
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "category")
 public class Category {
 

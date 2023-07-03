@@ -25,6 +25,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @FieldNameConstants
 @Builder
@@ -33,6 +35,7 @@ import org.hibernate.Hibernate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "app_user")
 public class User {
 

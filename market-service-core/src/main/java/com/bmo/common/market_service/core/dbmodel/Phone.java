@@ -19,6 +19,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Builder
 @Getter
@@ -26,6 +28,7 @@ import org.hibernate.Hibernate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "phone")
 public class Phone {
 
