@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,6 +63,19 @@ public class CommonExceptionHandler {
             .status(HttpStatus.BAD_REQUEST.value())
             .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
             .message(e.getAllErrors().toString())
+            .timestamp(LocalDateTime.now())
+            .build());
+  }
+
+  @ExceptionHandler({BindException.class})
+  public ResponseEntity<ExceptionResponseBody> handleBindExceptionExceptions(BindException e) {
+    log.error(e.getMessage(), e);
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(ExceptionResponseBody.builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+            .message(e.getMessage())
             .timestamp(LocalDateTime.now())
             .build());
   }

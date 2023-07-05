@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -48,11 +49,11 @@ public class ProductItemController {
     return ResponseEntity.ok(productItemResponseDto);
   }
 
-  @GetMapping("/product-items/product/{id}")
+  @GetMapping("/product/{id}/product-items")
   public ResponseEntity<Page<ProductItemResponseDto>> getProductItemsByProductId(
       @PathVariable("id") UUID productId,
       ProductItemFiltersCriteria filtersCriteria,
-      PageRequestDto pageRequest) {
+      @Validated PageRequestDto pageRequest) {
 
     Page<ProductItemResponseDto> productItemsPage =
         productItemService.getProductItemsByProductId(productId, filtersCriteria, pageRequest)

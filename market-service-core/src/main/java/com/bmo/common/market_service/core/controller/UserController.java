@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,7 @@ public class UserController {
 
   @GetMapping("/users")
   public ResponseEntity<Page<UserResponseDto>> getUsersFiltered(UsersFilterCriteria usersFilterCriteria,
-      PageRequestDto pageRequest) {
+      @Validated PageRequestDto pageRequest) {
 
     Page<User> users = userService.getUsersFiltered(usersFilterCriteria, pageRequest);
     Page<UserResponseDto> responseDto = users.map(userMapper::mapToResponseDto);

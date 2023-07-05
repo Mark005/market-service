@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class UsersOrderController {
   public ResponseEntity<Page<OrderResponseDto>> getOrdersForCurrentUser(
       @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
       UsersFilterCriteria usersFilterCriteria,
-      PageRequestDto pageRequest) {
+      @Validated PageRequestDto pageRequest) {
 
     Page<UsersOrder> orders = usersOrderService.getOrdersFiltered(userId, usersFilterCriteria, pageRequest);
     Page<OrderResponseDto> responsePage = orders.map(usersOrderMapper::mapToResponseDto);
