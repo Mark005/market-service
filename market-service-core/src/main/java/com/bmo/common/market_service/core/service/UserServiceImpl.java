@@ -1,5 +1,7 @@
 package com.bmo.common.market_service.core.service;
 
+import com.bmo.common.auth_service.client.AuthServiceClient;
+import com.bmo.common.auth_service.model.UpdateUserIdBody;
 import com.bmo.common.market_service.core.dbmodel.Cart;
 import com.bmo.common.market_service.core.dbmodel.User;
 import com.bmo.common.market_service.core.dbmodel.enums.UserStatus;
@@ -29,6 +31,8 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final CartRepository cartRepository;
+
+  private final AuthServiceClient authServiceClient;
 
   private final UserMapper userMapper;
   private final EnumMapper enumMapper;
@@ -60,6 +64,8 @@ public class UserServiceImpl implements UserService {
     Cart cart = new Cart();
     cart.setUser(savedUser);
     cartRepository.save(cart);
+
+    authServiceClient.updateUserId(securityUserId, new UpdateUserIdBody(savedUser.getId()));
     return savedUser;
   }
 
