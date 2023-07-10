@@ -1,5 +1,6 @@
 package com.bmo.common.market_service.core.exception;
 
+import com.bmo.common.market_service.model.exception.AccessDeniedException;
 import com.bmo.common.market_service.model.exception.EntityNotFoundException;
 import com.bmo.common.market_service.model.exception.MarketServiceBusinessException;
 import java.time.LocalDateTime;
@@ -36,6 +37,19 @@ public class CommonExceptionHandler {
         .body(ExceptionResponseBody.builder()
             .status(HttpStatus.NOT_FOUND.value())
             .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+            .message(e.getMessage())
+            .timestamp(LocalDateTime.now())
+            .build());
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ExceptionResponseBody> handleAccessDeniedException(AccessDeniedException e) {
+    log.warn(e.getMessage(), e);
+    return ResponseEntity
+        .status(HttpStatus.FORBIDDEN)
+        .body(ExceptionResponseBody.builder()
+            .status(HttpStatus.FORBIDDEN.value())
+            .error(HttpStatus.FORBIDDEN.getReasonPhrase())
             .message(e.getMessage())
             .timestamp(LocalDateTime.now())
             .build());

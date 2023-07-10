@@ -1,7 +1,9 @@
 package com.bmo.common.market_service.core.controller;
 
+import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.ProductItem;
 import com.bmo.common.market_service.core.mapper.ProductItemMapper;
+import com.bmo.common.market_service.core.service.CommonUserValidator;
 import com.bmo.common.market_service.core.service.ProductItemService;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.product_item.ProductItemCreateDto;
@@ -22,19 +24,23 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class ProductItemController {
 
+  private final CommonUserValidator commonUserValidator;
   private final ProductItemService productItemService;
   private final ProductItemMapper productItemMapper;
 
   @PostMapping("/product-items")
   public ResponseEntity<List<ProductItemResponseDto>> createProductItems(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @RequestBody @Valid ProductItemCreateDto productCreateDto) {
 
+    commonUserValidator.validateUserNotDeleted(currentUserId);
     List<ProductItem> productItem = productItemService.createProductItems(productCreateDto);
     List<ProductItemResponseDto> responseDto = productItemMapper.mapToResponseDto(productItem);
     return ResponseEntity.ok(responseDto);
@@ -63,8 +69,11 @@ public class ProductItemController {
 
   @PatchMapping("/product-items/{id}/status")
   public ResponseEntity<ProductItemResponseDto> patchProductItemStatus(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @NotNull @PathVariable("id") UUID productItemId,
       @RequestBody ProductItemPatchStatusDto patchStatusDto) {
+
+    commonUserValidator.validateUserNotDeleted(currentUserId);
 
     ProductItem product = productItemService.patchProductItemStatus(productItemId, patchStatusDto);
     ProductItemResponseDto productResponseDto = productItemMapper.mapToResponseDto(product);
@@ -73,7 +82,10 @@ public class ProductItemController {
 
   @DeleteMapping("/product-items/{id}")
   public ResponseEntity<Void> deleteProductItem(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @NotNull @PathVariable("id") UUID productItemId) {
+
+    commonUserValidator.validateUserNotDeleted(currentUserId);
 
     productItemService.deleteProductItem(productItemId);
     return ResponseEntity.noContent().build();

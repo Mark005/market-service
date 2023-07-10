@@ -3,6 +3,7 @@ package com.bmo.common.market_service.core.controller;
 import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.UsersOrder;
 import com.bmo.common.market_service.core.mapper.UsersOrderMapper;
+import com.bmo.common.market_service.core.service.CommonUserValidator;
 import com.bmo.common.market_service.core.service.UsersOrderService;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.user.UsersFilterCriteria;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UsersOrderController {
 
+  private final CommonUserValidator commonUserValidator;
   private final UsersOrderService usersOrderService;
   private final UsersOrderMapper usersOrderMapper;
 
@@ -56,17 +58,19 @@ public class UsersOrderController {
       @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @RequestBody @Valid OrderCreateDto orderCreateDto) {
 
+    commonUserValidator.validateUserNotDeleted(currentUserId);
     UsersOrder usersOrder = usersOrderService.createOrder(currentUserId, orderCreateDto);
     OrderResponseDto responseDto = usersOrderMapper.mapToResponseDto(usersOrder);
     return ResponseEntity.ok(responseDto);
   }
 
   @PatchMapping("/users/current/orders/{id}/cancel")
-  public ResponseEntity<OrderResponseDto> updateOrderById(
-      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID userId,
+  public ResponseEntity<OrderResponseDto> cancelOrderById(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @NotNull @PathVariable("id") UUID orderId) {
 
-    UsersOrder usersOrder = usersOrderService.cancelOrder(userId, orderId);
+    commonUserValidator.validateUserNotDeleted(currentUserId);
+    UsersOrder usersOrder = usersOrderService.cancelOrder(currentUserId, orderId);
     OrderResponseDto responseDto = usersOrderMapper.mapToResponseDto(usersOrder);
     return ResponseEntity.ok(responseDto);
   }

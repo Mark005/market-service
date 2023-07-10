@@ -1,8 +1,10 @@
 package com.bmo.common.market_service.core.controller;
 
+import com.bmo.common.gateway.header.GatewayHeader;
 import com.bmo.common.market_service.core.dbmodel.Category;
 import com.bmo.common.market_service.core.mapper.CategoryMapper;
 import com.bmo.common.market_service.core.service.CategoryService;
+import com.bmo.common.market_service.core.service.CommonUserValidator;
 import com.bmo.common.market_service.model.PageRequestDto;
 import com.bmo.common.market_service.model.category.CategoriesFilterCriteria;
 import com.bmo.common.market_service.model.category.CategoryCreateDto;
@@ -23,12 +25,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class CategoryController {
 
+  private final CommonUserValidator commonUserValidator;
   private final CategoryService categoryService;
   private final CategoryMapper categoryMapper;
 
@@ -68,8 +72,11 @@ public class CategoryController {
   }
 
   @PostMapping("/categories")
-  public ResponseEntity<CategorySimpleResponseDto> addCategory(@RequestBody @Valid CategoryCreateDto newCategory) {
+  public ResponseEntity<CategorySimpleResponseDto> addCategory(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
+      @RequestBody @Valid CategoryCreateDto newCategory) {
 
+    commonUserValidator.validateUserNotDeleted(currentUserId);
     Category category = categoryService.addCategory(newCategory);
     CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToSimpleResponseDto(category);
     return ResponseEntity.ok(categorySimpleResponseDto);
@@ -77,9 +84,11 @@ public class CategoryController {
 
   @PutMapping("/categories/{id}")
   public ResponseEntity<CategorySimpleResponseDto> updateCategory(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @NotNull @PathVariable("id") UUID categoryId,
       @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
 
+    commonUserValidator.validateUserNotDeleted(currentUserId);
     Category category = categoryService.updateCategory(categoryId, categoryUpdateDto);
     CategorySimpleResponseDto categorySimpleResponseDto = categoryMapper.mapToSimpleResponseDto(category);
     return ResponseEntity.ok(categorySimpleResponseDto);
@@ -87,8 +96,10 @@ public class CategoryController {
 
   @DeleteMapping("/categories/{id}")
   public ResponseEntity<Void> deleteCategory(
+      @NotNull @RequestHeader(GatewayHeader.USER_ID) UUID currentUserId,
       @NotNull @PathVariable("id") UUID categoryId) {
 
+    commonUserValidator.validateUserNotDeleted(currentUserId);
     categoryService.deleteCategory(categoryId);
     return ResponseEntity.noContent().build();
   }

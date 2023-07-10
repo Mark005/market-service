@@ -27,7 +27,6 @@ public class PaymentDetailsController {
 
   private final PaymentDetailsService paymentDetailsService;
   private final PaymentDetailsMapper paymentDetailsMapper;
-  private final EnumMapper enumMapper;
 
   @GetMapping("/users/current/orders/{id}/payment-details")
   public ResponseEntity<PaymentDetailsResponseDto> getPaymentDetailsForOrder(
