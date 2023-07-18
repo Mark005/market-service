@@ -28,6 +28,7 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
   private final PaymentDetailsRepository paymentDetailsRepository;
   private final UsersOrderRepository usersOrderRepository;
 
+  private final UsersOrderService usersOrderService;
   private final DeliveryServiceClient deliveryServiceClient;
 
   private final EnumMapper enumMapper;
@@ -70,11 +71,13 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     }
 
     paymentDetails.setPaymentStatus(newPaymentStatus);
+    PaymentDetails savedPaymentDetails = paymentDetailsRepository.save(paymentDetails);
 
     UsersOrder usersOrder = paymentDetails.getUsersOrder();
 
     if (newPaymentStatus == PaymentStatus.PAID) {
       usersOrder.setStatus(OrderStatus.PAID);
+      usersOrderRepository.save(usersOrder);
 
       DeliveryStatusUpdateDto statusUpdateDto = DeliveryStatusUpdateDto.builder()
           .status(DeliveryStatusDto.PAID)
@@ -83,15 +86,14 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     }
 
     if (newPaymentStatus == PaymentStatus.CANCELLED) {
-      usersOrder.setStatus(OrderStatus.PAYMENT_CANCELLED);
+      usersOrderService.cancelOrder(userId, usersOrder.getId());
 
       DeliveryStatusUpdateDto statusUpdateDto = DeliveryStatusUpdateDto.builder()
           .status(DeliveryStatusDto.CANCELED)
           .build();
       deliveryServiceClient.updateDeliveryStatus(userId, usersOrder.getId(), statusUpdateDto);
     }
-    usersOrderRepository.save(usersOrder);
 
-    return paymentDetailsRepository.save(paymentDetails);
+    return savedPaymentDetails;
   }
 }
