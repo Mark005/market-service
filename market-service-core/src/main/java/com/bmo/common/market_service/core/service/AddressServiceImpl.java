@@ -46,14 +46,16 @@ public class AddressServiceImpl implements AddressService {
   @Override
   @Transactional
   public Address updateUsersAddress(UUID userId, UUID addressId, AddressUpdateDto updatedAddress) {
-    if (updatedAddress.getIsPrimary() && addressRepository.existsByUserIdAndIsPrimaryIsTrue(
-        userId)) {
+    Address address = addressRepository.findByIdAndUserId(addressId, userId)
+        .orElseThrow(() -> new EntityNotFoundException("Address", addressId));
+
+    if (addressRepository.existsByUserIdAndIsPrimaryIsTrue(userId)) {
       throw new MarketServiceBusinessException("Primary address already exists");
     }
-    return addressRepository.findByIdAndUserId(addressId, userId)
-        .map(userFromDb -> addressMapper.merge(userFromDb, updatedAddress))
-        .map(addressRepository::save)
-        .orElseThrow(() -> new EntityNotFoundException("Address", addressId));
+
+    Address merged = addressMapper.merge(address, updatedAddress);
+
+    return addressRepository.save(merged);
   }
 
   @Override
