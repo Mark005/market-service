@@ -64,8 +64,8 @@ public class Address {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Category category = (Category) o;
-    return getId() != null && Objects.equals(getId(), category.getId());
+    Address address = (Address) o;
+    return getId() != null && Objects.equals(getId(), address.getId());
   }
 
   @Override

@@ -65,8 +65,8 @@ public class OrderHistory {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Category category = (Category) o;
-    return getId() != null && Objects.equals(getId(), category.getId());
+    OrderHistory orderHistory = (OrderHistory) o;
+    return getId() != null && Objects.equals(getId(), orderHistory.getId());
   }
 
   @Override

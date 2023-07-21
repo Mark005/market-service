@@ -87,8 +87,8 @@ public class User {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Category category = (Category) o;
-    return getId() != null && Objects.equals(getId(), category.getId());
+    User user = (User) o;
+    return getId() != null && Objects.equals(getId(), user.getId());
   }
 
   @Override

@@ -106,8 +106,8 @@ public class UsersOrder {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Category category = (Category) o;
-    return getId() != null && Objects.equals(getId(), category.getId());
+    UsersOrder usersOrder = (UsersOrder) o;
+    return getId() != null && Objects.equals(getId(), usersOrder.getId());
   }
 
   @Override

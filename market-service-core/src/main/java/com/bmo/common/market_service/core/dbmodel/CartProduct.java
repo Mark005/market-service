@@ -51,8 +51,8 @@ public class CartProduct {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Category category = (Category) o;
-    return getId() != null && Objects.equals(getId(), category.getId());
+    CartProduct cartProduct = (CartProduct) o;
+    return getId() != null && Objects.equals(getId(), cartProduct.getId());
   }
 
   @Override

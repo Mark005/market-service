@@ -60,8 +60,8 @@ public class PaymentDetails {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Category category = (Category) o;
-    return getId() != null && Objects.equals(getId(), category.getId());
+    PaymentDetails paymentDetails = (PaymentDetails) o;
+    return getId() != null && Objects.equals(getId(), paymentDetails.getId());
   }
 
   @Override

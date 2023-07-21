@@ -57,8 +57,8 @@ public class Phone {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Category category = (Category) o;
-    return getId() != null && Objects.equals(getId(), category.getId());
+    Phone phone = (Phone) o;
+    return getId() != null && Objects.equals(getId(), phone.getId());
   }
 
   @Override

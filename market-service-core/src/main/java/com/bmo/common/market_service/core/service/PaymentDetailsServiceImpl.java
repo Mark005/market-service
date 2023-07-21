@@ -10,7 +10,7 @@ import com.bmo.common.market_service.core.dbmodel.enums.PaymentStatus;
 import com.bmo.common.market_service.core.mapper.EnumMapper;
 import com.bmo.common.market_service.core.repository.PaymentDetailsRepository;
 import com.bmo.common.market_service.core.repository.UsersOrderRepository;
-import com.bmo.common.market_service.model.enums.PaymentStatusDto;
+import com.bmo.common.market_service.model.exception.EntityNotFoundException;
 import com.bmo.common.market_service.model.exception.MarketServiceBusinessException;
 import com.bmo.common.market_service.model.payment_details.MakePaymentRequestDto;
 import com.bmo.common.market_service.model.payment_details.PaymentStatusChangeRequestDto;
@@ -34,16 +34,24 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
   private final EnumMapper enumMapper;
 
   @Override
-  public PaymentDetails getByOrderIdAndUserId(UUID orderId, UUID currentUserId) {
-    return paymentDetailsRepository.findByUsersOrderIdAndUsersOrderUserId(orderId, currentUserId);
+  public PaymentDetails getByOrderIdAndUserId(UUID orderId, UUID userId) {
+    return paymentDetailsRepository.findByUsersOrderIdAndUsersOrderUserId(orderId, userId)
+        .orElseThrow(() -> new EntityNotFoundException(
+            "PaymentDetails not found for orderId [%s] and userId [%s]"
+                .formatted(orderId, userId)));
   }
+
 
   @Override
   public PaymentDetails makePayment(
       UUID paymentId,
       UUID userId,
       MakePaymentRequestDto makePaymentRequestDto) {
-    PaymentDetails paymentDetails = paymentDetailsRepository.findByIdAndUsersOrderUserId(paymentId, userId);
+    PaymentDetails paymentDetails = paymentDetailsRepository.findByIdAndUsersOrderUserId(paymentId,
+            userId)
+        .orElseThrow(() -> new EntityNotFoundException(
+            "PaymentDetails not found for paymentId [%s] and userId [%s]"
+                .formatted(paymentId, userId)));
     paymentDetails.setPaymentMethod(enumMapper.map(makePaymentRequestDto.getPaymentMethod()));
     paymentDetails.setPaymentStatus(PaymentStatus.PENDING);
 
@@ -62,12 +70,18 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
 
     List<PaymentStatus> allowedStatuses = List.of(PaymentStatus.PAID, PaymentStatus.CANCELLED);
     if (!allowedStatuses.contains(newPaymentStatus)) {
-      throw new MarketServiceBusinessException("Not allowed status [%s]".formatted(newPaymentStatus));
+      throw new MarketServiceBusinessException(
+          "Not allowed status [%s]".formatted(newPaymentStatus));
     }
 
-    PaymentDetails paymentDetails = paymentDetailsRepository.findByIdAndUsersOrderUserId(paymentId, userId);
+    PaymentDetails paymentDetails = paymentDetailsRepository.findByIdAndUsersOrderUserId(paymentId,
+            userId)
+        .orElseThrow(() -> new EntityNotFoundException(
+            "PaymentDetails not found for paymentId [%s] and userId [%s]"
+                .formatted(paymentId, userId)));
     if (paymentDetails.getPaymentStatus() != PaymentStatus.PENDING) {
-      throw new MarketServiceBusinessException("Payment status can be changed only for status 'PENDING'");
+      throw new MarketServiceBusinessException(
+          "Payment status can be changed only for status 'PENDING'");
     }
 
     paymentDetails.setPaymentStatus(newPaymentStatus);
